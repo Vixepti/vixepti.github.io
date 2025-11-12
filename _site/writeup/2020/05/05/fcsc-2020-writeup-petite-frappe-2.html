@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Writeup - FCSC-2020 - Forensics - Petite Frappe 2 | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Writeup - FCSC-2020 - Forensics - Petite Frappe 2" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…" />
+<meta property="og:description" content="Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…" />
+<link rel="canonical" href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" />
+<meta property="og:url" content="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-05T19:00:06+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="twitter:title" content="Writeup - FCSC-2020 - Forensics - Petite Frappe 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-05-05T19:00:06+02:00","datePublished":"2020-05-05T19:00:06+02:00","description":"Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…","headline":"Writeup - FCSC-2020 - Forensics - Petite Frappe 2","image":"http://localhost:4000/assets/2020/05/FCSC.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html"},"url":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Writeup - FCSC-2020 - Forensics - Petite Frappe 2</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-05T19:00:06+02:00" itemprop="datePublished">May 5, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Comme pour le <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html">Petite frappe 1</a>, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Lors de l’investigation d’un poste GNU/Linux, vous analysez un nouveau fichier qui semble être généré par un programme d’enregistrement de frappes de clavier. Retrouvez ce qui a bien pu être écrit par l’utilisateur de ce poste à l’aide de ce fichier !</p>
+
+  <p>Format du flag : <em>FCSC{xxx}</em>, où <em>xxx</em> est la chaîne que vous aurez trouvée.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Bon comme je disais en intro, c’est vraiment dégueulasse, mais j’ai récupéré chaque valeur en face d’un <em>key press</em> :</p>
+
+<blockquote>
+  <p>46 46 24 65 24 65 39 32 46 30 28 31 32 57 65 24 55 26 54 65 54 65 53 31 57 33 30 28 65 57 26 65 26 65 39 26 26 47 56 46 26 65 26 65 33 24 39 65 39 65 39 30 33 26 27 65 33 27 24 28 31 38 30 26 65 24 65 24 65 40 26 40 26 54 32 40 26 27 62 59 59 62 65 46 26 65 26 65 41 46 24 42 65 26 39 28 65 30 57 17 54 46 24 55 31 26 27 17 24 25 26 27 28 29 17 26 57 17 55 24 30 28 17 40 26 30 53</p>
+</blockquote>
+
+<p>Puis j’ai comparé avec les <a href="https://gist.github.com/rickyzhang82/8581a762c9f9fc6ddb8390872552c250">keycode linux</a> :</p>
+
+<blockquote>
+  <p>lla a solution avec c xinput ne e seemble e pas s super pratique a a dedecoder62mm62 le e flag est un_clavier_azerty_en_vaut_deux</p>
+</blockquote>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{un_clavier_azerty_en_vaut_deux}</em></strong></p>
+
+<h1 id="edit">Edit</h1>
+
+<p>En fait, la solution propre était d’utiliser le script pour décoder présent sur : <a href="https://blog.rom1v.com/2011/11/keylogger-sous-gnulinux-enregistrer-les-touches-tapees-au-clavier/">blog.rom1v.com</a> :</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span><span class="kn">import</span> <span class="nn">re</span><span class="p">,</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">get_keymap</span><span class="p">():</span>
+    <span class="n">keymap</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">'xmodmap'</span><span class="p">,</span> <span class="s">'-pke'</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">).</span><span class="n">stdout</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">'keycode +(\d+) = (.+)'</span><span class="p">,</span> <span class="n">line</span><span class="p">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">keymap</span><span class="p">[</span><span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">keymap</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">keymap</span> <span class="o">=</span> <span class="n">get_keymap</span><span class="p">();</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">'key press +(\d+)'</span><span class="p">,</span> <span class="n">line</span><span class="p">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">keycode</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">keycode</span> <span class="ow">in</span> <span class="n">keymap</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">keymap</span><span class="p">[</span><span class="n">keycode</span><span class="p">],</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">'?'</span> <span class="o">+</span> <span class="n">keycode</span><span class="p">,</span></code></pre></figure>
+
+<p>En excécutant ce script sur le fichier text fournit :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@microwave]$</span><span class="w"> </span><span class="nb">cat </span>petite_frappe_2.txt | python2.7 xinput-decoder.py 
+<span class="go">l a space s o l u t i o n space a v e c space x i n p u t space n e space s e m b l e space p a s space s u p e r space p r a t i q u e space a space d e c o d e r Shift_R semicolon space l e space f l a g space e s t space u n underscore c l a v i e r underscore a z e r t y underscore e n underscore v a u t underscore d e u x</span></code></pre></figure>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">FCSC</span></li>    
+        
+          <li><span class="tag">ctf</span></li>    
+        
+          <li><span class="tag">writeup</span></li>    
+        
+          <li><span class="tag">forensic</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

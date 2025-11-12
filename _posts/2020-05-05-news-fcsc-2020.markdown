@@ -1,0 +1,37 @@
+---
+layout: post
+title:  "Writeups - FCSC-2020"
+date:   2020-05-04 23:00:00 +0200
+categories: [news]
+author: Vixepti
+image: /assets/2020/05/FCSC.png
+tags: [FCSC, ctf, writeup]
+---
+
+Lors de ces 10 derniers jours, le France Cybersecurity Challenge édition 2020 avait lieu. J'ai participé, et voici donc quelques writeups sur les épreuves que j'ai réussies. <!--more-->
+
+J'ai suivi la formation de 8h sur autopsy qui était gratuite pendant le confinement qui m'a beaucoup intéressée. Je n'avais jamais touché à des épreuves de forensics, et au final je me suis concentré dessus cette fois-ci parce que j'ai finalement trouvé ça très attrayant. Je ne m'attendais pas à flag grand chose mais au final j'ai réussi à me débrouiller sur quelques épreuves.
+
+{:refdef: style="text-align: center;"}
+![FCSC 2020](/assets/2020/05/FCSC.png)
+{: refdef}
+
+- **Intro**
+    - [NES Forever](/writeup/2020/05/05/fcsc-2020-writeup-NES-forever.html)
+    - [Le Rat Conteur](/writeup/2020/05/05/fcsc-2020-writeup-rat-conteur.html)
+    - [Cap ou Pcap](/writeup/2020/05/05/fcsc-2020-writeup-cap-pcap.html)
+    - [SuSHi](/writeup/2020/05/05/fcsc-2020-writeup-sushi.html)
+    - [Petite frappe 1](/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html)
+    - [Babel Web](/writeup/2020/05/05/fcsc-2020-babel-web.html)
+- **Forensics**
+    - [Petite frappe 2](/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html)
+    - [Find Me](/writeup/2020/05/05/fcsc-2020-writeup-find-me.html)
+    - [Académie de l'investigation - C'est la rentrée](/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html)
+    - [Académie de l'investigation - Premiers artéfacts](/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html)
+    - [Académie de l'investigation - Porte dérobée](/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html)
+- **Web**
+    - [RainbowPages](/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html)
+    - [EnterTheDungeon](/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html)
+    - [Revision](/writeup/2020/05/05/fcsc-2020-writeup-revision.html)
+
+Une première pour moi, vivement l'édition 2021, et d'ici là j'ai le temps d'aller apprendre des tas de trucs pour mieux me débrouille l'année prochaine !

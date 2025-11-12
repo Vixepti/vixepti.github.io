@@ -1,0 +1,55 @@
+---
+layout: page
+permalink: /categories/
+title: Catégories
+---
+
+<ul>
+{% assign categories_list = site.categories %}
+  {% if categories_list.first[0] == null %}
+    {% for category in categories_list %}
+
+      {% for categoryname in site.data.categories %}
+        {% if category[0] == categoryname.slug %}
+          <li><a href="#{{ category | downcase | downcase | url_escape | strip | replace: ' ', '-' }}">{{ categoryname.name | camelcase }} ({{ site.tags[category].size }})</a></li>
+        {% endif %}
+      {% endfor %}
+
+    {% endfor %}
+  {% else %}
+    {% for category in categories_list %}
+
+      {% for categoryname in site.data.categories %}
+        {% if category[0] == categoryname.slug %}
+          <li><a href="#{{ category[0] | downcase | url_escape | strip | replace: ' ', '-' }}">{{ categoryname.name | camelcase }} ({{ category[1].size }})</a></li>
+        {% endif %}
+      {% endfor %}
+
+    {% endfor %}
+  {% endif %}
+{% assign categories_list = nil %}
+</ul>
+
+{% for category in site.categories %}
+
+  {% for categoryname in site.data.categories %}
+    {% if category[0] == categoryname.slug %}
+  
+      <h3 id="{{ category[0] | downcase | url_escape | strip | replace: ' ', '-' }}">{{ categoryname.name | camelcase }}</h3>
+      <ul>
+      {% assign pages_list = category[1] %}
+      {% for post in pages_list %}
+        {% if post.title != null %}
+          {% if group == null or group == post.group %}
+            <li><a href="{{ site.url }}{{ post.url }}">{{ post.title }}</a> - <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%B %d, %Y" }}</time></li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% assign pages_list = nil %}
+      {% assign group = nil %}
+      </ul>
+
+    {% endif %}
+  {% endfor %}
+
+{% endfor %}

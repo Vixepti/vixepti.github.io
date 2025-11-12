@@ -1,0 +1,15 @@
+- name: Administration Système / Réseaux
+  slug: adminsys
+
+- name: CTF Writeups
+  slug: writeup
+
+- name: Homelab
+  slug: homelab
+
+- name: Hacking
+  slug: hacking
+  
+- name: Cryptographie
+  slug: crypto
+

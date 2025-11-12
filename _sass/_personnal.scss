@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Raleway&display=swap');
+@font-face {
+    font-family: "hack";
+    src: url("/assets/fonts/Hack-Regular.ttf");
+}
+
+.post-box {
+    margin-bottom: 10px; // A MODIFIER
+}
+
+.post-box-header {
+    color: $text-color-negative;
+    background-color: $brand-color-dark;
+    padding: 12px 20px;
+}
+
+.post-box:hover .post-box-header {
+    background-color: $brand-color;
+}
+
+a.post-box-title {
+    color: $text-color-negative;
+    font-family: hack;
+    letter-spacing: 0.8px;
+}
+
+.post-box-footer {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: 1px solid #ddd;
+    margin-top: 0.5em;
+}
+
+.post-box-date {
+    align-items: right;
+    font-size: $small-font-size;
+    color: $grey-color;
+}
+
+.post-box-content {
+    padding: 15px 20px 0 20px;
+    border-left: 1px solid $grey-color-light;
+    border-right: 1px solid $grey-color-light;
+    border-bottom: 1px solid $grey-color-light;
+}
+
+
+/*.post-box:hover .post-box-content {
+}*/
+
+.post-box-transition {
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+}
+
+a.post-box-readmore {
+    font-family: hack;
+    //display: inline-block;
+    padding: 6px 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background: $brand-color-dark;
+    color: $text-color-negative;
+    text-decoration: none;
+}
+
+a.post-box-readmore:hover {
+    background: $brand-color; //#4c9809;
+}
+
+.site-footer {
+    background-color: #242526;
+}
+
+.footer-heading {
+    color: $text-color-negative;
+}
+
+.site-header {
+    box-shadow: 0 6px 12px -5px rgba(0, 0, 0, 0.175);
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    padding-right: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: black;
+    font-weight: bolder;
+}
+
+.site-title::first-letter {
+    color: $brand-color;
+}
+
+.page-link {
+    color: $grey-color;
+    font-weight: bold;
+    &:hover {
+        color: $brand-color;
+    }
+}
+
+hr {
+    border: 2px solid $brand-color;
+}
+
+strong,
+em {
+    color: $brand-color-dark;
+}
+
+.centered {
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination>li {
+    display: inline;
+    text-decoration: none;
+}
+
+.pagination>li>span,
+.pagination>li>a {
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+    border-radius: 10px;
+    padding: 9px 16px;
+    &:not(.active) {
+        border: 1px solid $grey-color-light;
+    }
+    &:hover {
+        background-color: $brand-color;
+        color: $text-color-negative;
+        border: 1px solid $brand-color;
+    }
+}
+
+.active {
+    background-color: $brand-color;
+    color: $text-color-negative;
+    border: 1px solid $brand-color;
+}
+
+.tags {
+    display: inline-block;
+}
+
+.tags li {
+    display: inline;
+    text-decoration: none;
+}
+
+.tags span {
+    -webkit-transition: all 200ms linear;
+    -moz-transition: all 200ms linear;
+    -o-transition: all 200ms linear;
+    transition: all 200ms linear;
+    font-size: 13px;
+    border-radius: 10px;
+    padding: 9px 16px;
+    background-color: $brand-color;
+    color: $text-color-negative;
+    &:hover {
+        background-color: $brand-color-dark;
+    }
+}
+
+.post-box-content-wrapper {
+    display: inline-block;
+    margin-bottom: 0.5em;
+    width: 100%;
+}
+
+.post-box-thumbnail {
+    max-width: 200px;
+    float: left;
+    margin-right: 0.5em;
+    position: relative;
+    @include media-query($on-palm) {
+        float: none;
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5em;
+    }
+}
+
+.post-box-excerpt {
+    float: left;
+    position: relative;
+    max-width: calc(100% - 200px - 0.5em);
+    @include media-query($on-palm) {
+        float: none;
+        max-width: 100%;
+    }
+}
+
+
+/*.post-box-readmore-wrapper {
+}*/
+
+.youtube-embed {
+    display: block;
+    text-align: center;
+}

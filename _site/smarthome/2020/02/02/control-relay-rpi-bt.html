@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Contrôler un relais en bluetooth avec un Raspberry Pi | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Contrôler un relais en bluetooth avec un Raspberry Pi" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Controler un relais depuis un Raspberry Pi, en utilisant le bluetooth. C’est ce que nous allons rapidement voir dans cet article." />
+<meta property="og:description" content="Controler un relais depuis un Raspberry Pi, en utilisant le bluetooth. C’est ce que nous allons rapidement voir dans cet article." />
+<link rel="canonical" href="http://localhost:4000/smarthome/2020/02/02/control-relay-rpi-bt.html" />
+<meta property="og:url" content="http://localhost:4000/smarthome/2020/02/02/control-relay-rpi-bt.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/02/thumbnail-rpi-relay-bt.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-02-02T23:55:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/02/thumbnail-rpi-relay-bt.png" />
+<meta property="twitter:title" content="Contrôler un relais en bluetooth avec un Raspberry Pi" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-02-02T23:55:00+01:00","datePublished":"2020-02-02T23:55:00+01:00","description":"Controler un relais depuis un Raspberry Pi, en utilisant le bluetooth. C’est ce que nous allons rapidement voir dans cet article.","headline":"Contrôler un relais en bluetooth avec un Raspberry Pi","image":"http://localhost:4000/assets/2020/02/thumbnail-rpi-relay-bt.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/smarthome/2020/02/02/control-relay-rpi-bt.html"},"url":"http://localhost:4000/smarthome/2020/02/02/control-relay-rpi-bt.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Contrôler un relais en bluetooth avec un Raspberry Pi</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-02-02T23:55:00+01:00" itemprop="datePublished">Feb 2, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Controler un relais depuis un Raspberry Pi, en utilisant le bluetooth. C’est ce que nous allons rapidement voir dans cet article.<!--more--></p>
+
+<h2 id="matériel-requis">Matériel requis</h2>
+
+<ul>
+  <li>Raspberry Pi (peu importe la version)</li>
+  <li>Arduino (peu importe le modèle)</li>
+  <li>Module bluetooth HC-06</li>
+  <li>Dongle USB Bluetooth</li>
+  <li>Relais</li>
+</ul>
+
+<p>Les programmes dont on va avoir besoin sont sur mon github : <a href="https://github.com/Vixepti/RPi-Arduino-bluetooth-automation">📁 Par ici.</a></p>
+
+<h2 id="vidéo">Vidéo</h2>
+
+<p>La réalisation de ce mini projet en vidéo :</p>
+
+<div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/qIX_xFcow0U" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+<p><br /></p>
+
+<h2 id="raspberry-pi">Raspberry Pi</h2>
+
+<p>Le raspberry pi doit être installé avec un linux (j’utilise raspbian). Je ne détaillerai pas l’installation dans ce tuto.</p>
+
+<p>Il est préférable qu’il ait une adresse IP fixe.</p>
+
+<p>L’activation du serveur SSH est vivement conseillé pour pouvoir copier/coller les commandes.</p>
+
+<p>Il faut que le dongle Bluetooth soit branché.</p>
+
+<h3 id="installation-des-logiciels">Installation des logiciels</h3>
+
+<p>On va avoir besoin de quelques logiciels, on les installes donc :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">sudo apt update &amp;&amp; apt upgrade -y
+sudo apt install bluetooth bluez bluez-utils apache2 php7.1</span></code></pre></figure>
+
+<h2 id="montage-de-larduino">Montage de l’arduino</h2>
+
+<p>L’arduino doit être monté selon le schéma suivant :</p>
+
+<p style="text-align: center;"><a href="/assets/2020/02/arduino-schema-bluetooth.png"><img src="/assets/2020/02/arduino-schema-bluetooth.png" alt="Schéma branchement arduino bluetooth" /></a></p>
+
+<h3 id="paramétrage-du-module-hc-06">Paramétrage du module HC-06</h3>
+
+<p>Il faut paramétrer le module HC-06 pour changer son nom et le code PIN de connexion. Pour cela, il faut téléverser le programme suivant sur l’arduino :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;SoftwareSerial.h&gt;</span><span class="c1">
+</span><span class="cp">
+</span>
+<span class="n">SoftwareSerial</span> <span class="nf">hc06</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">(){</span>
+  <span class="c1">//Initialize Serial Monitor
+</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"ENTER AT Commands:"</span><span class="p">);</span>
+  <span class="c1">//Initialize Bluetooth Serial Port
+</span>
+  <span class="n">hc06</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">loop</span><span class="p">(){</span>
+  <span class="c1">//Write data from HC06 to Serial Monitor
+</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">hc06</span><span class="p">.</span><span class="n">available</span><span class="p">()){</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">hc06</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
+  <span class="p">}</span>
+  
+  <span class="c1">//Write from Serial Monitor to HC06
+</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()){</span>
+    <span class="n">hc06</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
+  <span class="p">}</span>  
+<span class="p">}</span></code></pre></figure>
+
+<p>Puis se connecter au moniteur série pour lui envoyer les commandes AT suivante :</p>
+
+<ul>
+  <li><em>AT+NAMEnouveau_nom :</em> Changement du nom visible en bluetooth.</li>
+  <li><em>AT+PINxxxx :</em> Changement du code PIN de connexion.</li>
+</ul>
+
+<p>Ici j’ai fais :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">AT+NAMEhc-06
+AT+PIN1234</span></code></pre></figure>
+
+<h2 id="création-de-la-liaison-bluetooth">Création de la liaison bluetooth</h2>
+
+<p>L’appairage avec le module bluetooth ne se fait qu’une fois. Au redémarrage, la liaison devrait persister.</p>
+
+<ul>
+  <li>On démarre le service bluetooth</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">systemctl start bluetooth</span></code></pre></figure>
+
+<ul>
+  <li>On fait l’appairage avec <strong>bluetoothctl</strong>:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">    power on
+    agent on
+    scan on
+    ... wait ...
+    scan off
+</span><span class="gp">    pair &lt;addr&gt;</span></code></pre></figure>
+
+<ul>
+  <li>On créé la liaison série :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">rfcomm bind 0 &lt;addr&gt;</span></code></pre></figure>
+
+<p>Ici, j’utilise <strong>0</strong> car c’est la première connexion série bluetooth que je paramètre. Si on en ajoute une deuxième on notera <strong>rfcomm bind 1 &lt;addr&gt;</strong> et on utilisera ensuite <strong>/dev/rfcomm1</strong>.</p>
+
+<p>Exemple avec mon appairage :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">root@raspberrypi:~#</span><span class="w"> </span>bluetoothctl
+<span class="go">Agent registered
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span>power on
+<span class="go">Changing power on succeeded
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span>agent on
+<span class="go">Agent is already registered
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span>scan on
+<span class="go">Discovery started
+[CHG] Controller 00:19:0E:0B:F8:90 Discovering: yes
+[NEW] Device 20:15:10:09:66:56 20-15-10-09-66-56
+[CHG] Device 20:15:10:09:66:56 LegacyPairing: no
+[CHG] Device 20:15:10:09:66:56 Name: HC06.module
+
+[CHG] Device 20:15:10:09:66:56 Alias: HC06.module
+
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span>scan off
+<span class="go">[CHG] Device 20:15:10:09:66:56 RSSI is nil
+[CHG] Controller 00:19:0E:0B:F8:90 Discovering: no
+Discovery stopped
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span>pair 20:15:10:09:66:56
+<span class="go">Attempting to pair with 20:15:10:09:66:56
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 Connected: yes
+[HC06.module
+Request PIN code
+[HC06.module
+[agent] Enter PIN code: 1234
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 UUIDs: 00001101-0000-1000-8000-00805f9b34fb
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 ServicesResolved: yes
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 Paired: yes
+[HC06.module
+Pairing successful
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 ServicesResolved: no
+[HC06.module
+[CHG] Device 20:15:10:09:66:56 Connected: no
+</span><span class="gp">[bluetooth]#</span><span class="w"> </span><span class="nb">exit</span>
+<span class="gp">root@raspberrypi:~#</span><span class="w"> </span>rfcomm <span class="nb">bind </span>0 20:15:10:09:66:56</code></pre></figure>
+
+<h2 id="paramétrage-du-serveur-web">Paramétrage du serveur web</h2>
+
+<p>L’interface de pilotage est minimaliste, j’ai réutilisé un code que j’avais écrit il y a 6 ~ 7 ans. <em>L’intéret ici est simplement de démontrer le fonctionenment d’une liaison série à travers une communication bluetooth.</em></p>
+
+<ul>
+  <li>On créé un fichier /var/www/html/index.php :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">rm /var/www/html/index.html
+nano /var/www/html/index.php</span></code></pre></figure>
+
+<ul>
+  <li>
+    <p>Et on colle le contenu de <a href="https://github.com/Vixepti/RPi-Arduino-bluetooth-automation/blob/master/www/index.php">ce code</a>.</p>
+  </li>
+  <li>
+    <p>Il est ensuite nécessaire d’ajouter l’utilisateur <strong>www-data</strong> (qui gère le serveur web) au groupe <strong>dialout</strong> (qui gère les ports série) pour que notre application puisse communiquer via <em>/dev/rfcomm0</em> :</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">sudo adduser www-data dialout
+sudo systemctl restart apache2.service</span></code></pre></figure>
+
+<h2 id="test">Test</h2>
+
+<p>A présent, tout devrait être opérationnel. On peut donc se connecter à notre application web dans un navigateur en entrant l’adresse IP du Raspberry PI :</p>
+
+<p style="text-align: center;"><a href="/assets/2020/02/webapp-pi-bt.png"><img src="/assets/2020/02/webapp-pi-bt.png" alt="Application web" /></a></p>
+
+<p>Si on clique sur le boutton allumer ou éteindre, la liaison avec l’arduino doit se faire et le relais doit agir en fonction. Si la communication ne se fait pas, un message <em>pas de comm avec l’arduino</em> devrait apparaître. Enfin, si le message d’erreur n’apparait pas mais que le relais ne réagit pas, il peut s’agir d’un problème de branchement de ce dernier, ou d’un problème de paramétrage du message envoyé (“h” ou “l”).</p>
+
+<p>J’espère que cet article vous aura plu. La méthode est simpliste et ce n’est certainement pas la meilleure façon de faire, mais ça peut donner des idées. A +</p>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">raspberry pi</span></li>    
+        
+          <li><span class="tag">arduino</span></li>    
+        
+          <li><span class="tag">bluetooth</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/smarthome/2020/02/02/control-relay-rpi-bt.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

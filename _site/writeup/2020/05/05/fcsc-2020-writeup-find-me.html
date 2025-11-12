@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Writeup - FCSC-2020 - Forensics - Find Me | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Writeup - FCSC-2020 - Forensics - Find Me" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation." />
+<meta property="og:description" content="Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation." />
+<link rel="canonical" href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" />
+<meta property="og:url" content="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-05T19:00:07+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/05/FCSC.png" />
+<meta property="twitter:title" content="Writeup - FCSC-2020 - Forensics - Find Me" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-05-05T19:00:07+02:00","datePublished":"2020-05-05T19:00:07+02:00","description":"Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.","headline":"Writeup - FCSC-2020 - Forensics - Find Me","image":"http://localhost:4000/assets/2020/05/FCSC.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html"},"url":"http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Writeup - FCSC-2020 - Forensics - Find Me</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-05-05T19:00:07+02:00" itemprop="datePublished">May 5, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>Find Me</em> est une des épreuves de forensic du <em>France Cybersecurity Challenge 2020</em> qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+<blockquote>
+  <p>Vous avez accès à un fichier <em>find_me</em> qui semble renfermer un secret bien gardé, qui n’existe peut-être même plus. Retrouvez son contenu !</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Dans un premier temps, je check le type du fichier <em>find_me</em> :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>file find_me 
+<span class="go">find_me: Linux rev 1.0 ext4 filesystem data, UUID=9c0d2dc5-184c-496a-ba8e-477309e521d9, volume name "find_me" (needs journal recovery) (extents) (64bit) (large files) (huge files)</span></code></pre></figure>
+
+<p>On a donc un système de fichier ext4, que je m’empresse d’ouvrir dans <em>Autopsy</em>. Une fois le scan terminé, je remarque des fichiers qui ont été supprimés.</p>
+
+<ul>
+  <li>Celui qui attire le plus mon attention est <em>unlock_me</em>. C’est un fichier qui semble chiffré avec <a href="https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup">LUKS</a>.</li>
+</ul>
+
+<p style="text-align: center;"><img src="/assets/2020/05/findme-unlockme.png" alt="Find Me - unlock_me" /></p>
+
+<ul>
+  <li>Bien évidemment le fichier <em>pass.b64</em> ne donne pas la clé pour déchiffrer, mais elle donne une indication :</li>
+</ul>
+
+<p style="text-align: center;"><img src="/assets/2020/05/findme-passb64.png" alt="Find Me - pass.b64" /></p>
+
+<ul>
+  <li>Je rassemble donc tous les fichiers <em>partXX</em> et j’obtiens :</li>
+</ul>
+
+<blockquote>
+  <p>TWYtOVkyb01OWm5IWEtzak04cThuUlRUOHgzVWRZ</p>
+</blockquote>
+
+<p>Ce qui donne <em>Mf-9Y2oMNZnHXKsjM8q8nRTT8x3UdY</em> une fois décodé depuis base64.</p>
+
+<ul>
+  <li>Puis j’ai un peu galérer pour déchiffrer mais finalement :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo </span>cryptsetup open <span class="nt">--type</span> luks <span class="nt">--key-file</span><span class="o">=</span>keyfile <span class="nt">--cipher</span><span class="o">=</span>aes-xts-plain64 unlock_me unlockedfile
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo </span>mount /dev/mapper/unlockedfile mount/
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cd </span>mount/
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-liah</span>
+<span class="go">total 4,0K
+    271 drwxr-xr-x 2 root    root      92  1 avril 21:54 .
+1892645 drwxr-xr-x 7 vixepti vixepti 4,0K 25 avril 17:45 ..
+    272 -r-------- 1 root    root      70  1 avril 21:54 .you_found_me
+</span><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat</span> .you_found_me
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo cat</span> .you_found_me 
+<span class="gp">FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}[vixepti@microwave mount]$</span><span class="w"> </span></code></pre></figure>
+
+<h1 id="flag">Flag</h1>
+
+<p>La flag est donc : <strong><em>FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}</em></strong></p>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">FCSC</span></li>    
+        
+          <li><span class="tag">ctf</span></li>    
+        
+          <li><span class="tag">writeup</span></li>    
+        
+          <li><span class="tag">forensic</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

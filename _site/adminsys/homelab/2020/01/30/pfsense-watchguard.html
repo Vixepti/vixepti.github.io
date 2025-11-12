@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Tuto - Installation PfSense sur un Watchguard Firebox XTM 505 | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Tuto - Installation PfSense sur un Watchguard Firebox XTM 505" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Installation de l’OS pare-feu PfSense sur un boitier Watchguard Firebox XTM 505." />
+<meta property="og:description" content="Installation de l’OS pare-feu PfSense sur un boitier Watchguard Firebox XTM 505." />
+<link rel="canonical" href="http://localhost:4000/adminsys/homelab/2020/01/30/pfsense-watchguard.html" />
+<meta property="og:url" content="http://localhost:4000/adminsys/homelab/2020/01/30/pfsense-watchguard.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2020/01/pfsense-watchguard-thumbnail.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-01-30T16:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2020/01/pfsense-watchguard-thumbnail.jpg" />
+<meta property="twitter:title" content="Tuto - Installation PfSense sur un Watchguard Firebox XTM 505" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2020-01-30T16:00:00+01:00","datePublished":"2020-01-30T16:00:00+01:00","description":"Installation de l’OS pare-feu PfSense sur un boitier Watchguard Firebox XTM 505.","headline":"Tuto - Installation PfSense sur un Watchguard Firebox XTM 505","image":"http://localhost:4000/assets/2020/01/pfsense-watchguard-thumbnail.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/adminsys/homelab/2020/01/30/pfsense-watchguard.html"},"url":"http://localhost:4000/adminsys/homelab/2020/01/30/pfsense-watchguard.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tuto - Installation PfSense sur un Watchguard Firebox XTM 505</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-01-30T16:00:00+01:00" itemprop="datePublished">Jan 30, 2020
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Installation de l’OS pare-feu PfSense sur un boitier Watchguard Firebox XTM 505.
+<!--more--></p>
+
+<h2 id="matériel-requis">Matériel requis</h2>
+
+<p>Pour installer PfSense sur un watchguard, on va avoir besoin de plusieurs choses :</p>
+<ul>
+  <li>Un boitier Watchguard Firebox XTM 5 series (obviously)</li>
+  <li>Une <a href="https://www.amazon.fr/Transcend-Carte-M%C3%A9moire-CompactFlash-TS4GCF133/dp/B000VY7HYM/">CF Card</a> (4 Go suffisent largement)</li>
+  <li>Un lecteur USB de CF Cards</li>
+  <li>Un HDD / SSD 2,5” SATA</li>
+</ul>
+
+<h2 id="vidéo">Vidéo</h2>
+
+<p>L’installation en vidéo :</p>
+
+<div class="youtube-embed">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/p2xVbr2GF-Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
+<p><br /></p>
+
+<h2 id="procédure-dinstallation">Procédure d’installation</h2>
+
+<h3 id="création-du-média-bootable">Création du média bootable</h3>
+
+<p>Dans un premier temps, on va télécharger l’image de PfSense adapté à notre installation. Pour ça, on se rends sur <a href="https://www.pfsense.org/download/">le site officiel</a>.</p>
+
+<p>Il faut ensuite définir dans le formulaire prévu à cet effet :</p>
+
+<ul>
+  <li><strong>Version :</strong> on prends la dernière</li>
+  <li><strong>Architecture :</strong> AMD64 (64-bit)</li>
+  <li><strong>Installer :</strong> USB Memstick Installer</li>
+  <li><strong>Console :</strong> Serial</li>
+  <li><strong>Mirror :</strong> Peu importe</li>
+</ul>
+
+<p style="text-align: center; max-width=&quot;500px&quot;"><a href="/assets/2020/01/setup-pfsense-download.PNG"><img src="/assets/2020/01/setup-pfsense-download.PNG" alt="PfSense Download Form" /></a></p>
+
+<p>Puis on clique sur <strong>télécharger</strong>.</p>
+
+<h4 id="windows">Windows</h4>
+
+<p>Cette étape n’est pas obligatoire, mais on peu néttoyer la CF Card en écrasant la table de partition :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">diskpart
+list disk
+select disk X
+clean</span></code></pre></figure>
+
+<p>Enfin, on copie l’image pfsense sur la carte compact flash :</p>
+
+<ul>
+  <li>On peut utiliser <a href="https://sourceforge.net/projects/win32diskimager/">win32diskImager</a> ou <a href="https://rufus.ie/">rufus</a>.</li>
+</ul>
+
+<h4 id="linux">Linux</h4>
+
+<p>Écraser la table de partition (toujours facultatif…) :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">sudo dd if=/dev/zero of=/dev/sdz bs=1M count=1</span></code></pre></figure>
+
+<p>Écrire l’image sur la carte compact flash :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">gzip -dc pfSense-memstick-2.4.4-RELEASE-p3-amd64.img.gz | sudo dd of=/dev/sdz bs=1M</span></code></pre></figure>
+
+<h3 id="préparation-du-stockage">Préparation du stockage</h3>
+
+<p>On va installer PfSense sur un HDD / SSD 2,5” (parce qu’il n’y a pas beaucoup de place dans le boitier). Il est préférable de supprimer toutes les données et partitions stockées dessus, même si l’installeur formatera le disque.</p>
+
+<p>Une fois que le disque est prêt, il faut le placer dans le boitier. L’alimentation du watchguard est équipé d’un câble SATA. Il faut également ajouter un câble SATA (données) et le brancher sur la carte mère :</p>
+
+<p style="text-align: center; max-width=&quot;500px&quot;"><a href="/assets/2020/01/watchguard-hdd.jpg"><img src="/assets/2020/01/watchguard-hdd.jpg" alt="Watchguard HDD" /></a></p>
+
+<h3 id="communication">Communication</h3>
+
+<p>Pour pouvoir communiquer avec le boitier, on va utiliser son port console, sur lequel on va brancher un câble série <strong><em>RJ45 - DB9</em></strong> (type <em>cisco</em>). Pour la liaison avec l’ordinateur, on rajouter un adaptateur <strong><em>DB9 - USB</em></strong>.</p>
+
+<p>Une fois la liaison physique réalisée, on peut ouvrir une console serie avec un logiciel type <strong>Putty</strong> (windows) ou <strong>Minicom</strong> (linux). Les paramètres de connexion sont les suivants :</p>
+<ul>
+  <li><strong>Vitesse :</strong> 115200</li>
+  <li><strong>Bits de données :</strong> 8</li>
+  <li><strong>Bits de parité :</strong> None</li>
+  <li>
+    <p><strong>Bits de stop :</strong> 1</p>
+  </li>
+  <li>Pour se connecter avec putty :</li>
+</ul>
+
+<p style="text-align: center; max-width=&quot;500px&quot;"><a href="/assets/2020/01/putty-serial-connection.PNG"><img src="/assets/2020/01/putty-serial-connection.PNG" alt="Serial Putty" /></a></p>
+
+<p>Il faut adapter COM3 en fonction de votre configuration…</p>
+
+<ul>
+  <li>Pour se connecter avec minicom :</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">minicom -D /dev/ttyUSB0 -R 115200</span></code></pre></figure>
+
+<p>Il faut adapter /dev/ttyUSB0 en fonction de votre configuration…</p>
+
+<h3 id="installation">Installation</h3>
+
+<p>Maintenant que l’on a une connexion console ouverte, on peut <strong>démarrer le boitier</strong> pour débuter l’installation.</p>
+
+<blockquote>
+  <p>La vidéo au début de l’article montre précisément les étapes suivantes.</p>
+</blockquote>
+
+<ol>
+  <li>Laisser PfSense démarrer.</li>
+  <li>Choisir le type de console (je laisse <em>vt100</em> par défaut, mais pas sur que ce soit la meilleure option).</li>
+  <li>Accepter la note concernant le copyright.</li>
+  <li>Choisir <strong>Install</strong>.</li>
+  <li>Sélectionner le <strong>clavier</strong> (keyboard map) et valider avec <strong>Select</strong>.</li>
+  <li>Choisir la méthode de partitionnement du disque. Personnellement je ne m’embête pas et je chosis <strong>Auto</strong> et valide avec <strong>Ok</strong>.</li>
+  <li>Validation de l’utilisation du disque entier avec <strong>Entire Disk</strong>.</li>
+  <li>Choix du schéma de partition <strong>MBR</strong>.</li>
+  <li>Il faut ensuite sélectionner le disque sur lequel installer. En fonction de la taille, on choisit le HDD / SSD et non pas la CF Card (beaucoup plus petite). Pour ma part cela correspond à <strong>ada1</strong>.</li>
+</ol>
+
+<p>A présent, PfSense devrait être en train de s’installer. A la fin de l’installation, le système propose de passer sur un shell. Je n’ai pas besoin de ce shell, je sélectionne donc <strong>no</strong>, puis <strong>Reboot</strong>.</p>
+
+<p>Lorsque le système s’éteint et qu’il s’apprète à redémarrer, il faut forcer le boitier à s’éteindre en appuyant sur le bouton.</p>
+
+<p>L’installation étant terminée, on peut retirer la carte compact flash car nous n’en avons plus besoin.</p>
+
+<p>Le prochain démarrage du boitier se fera sur PfSense, installé sur le disque dur. Il restera simplement à configurer les cartes réseaux, l’interfaces web et paraméter le système selon ses propres besoins.</p>
+
+<p>Have fun !</p>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">pfsense</span></li>    
+        
+          <li><span class="tag">watchguard</span></li>    
+        
+          <li><span class="tag">XTM 5</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/adminsys/homelab/2020/01/30/pfsense-watchguard.html" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

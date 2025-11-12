@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SSH et SFTP sur Windows 10 | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="SSH et SFTP sur Windows 10" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="J’ai découvert il y a peu que microsoft à intégré un client SSH nativement dans windows 10. C’est une très bonne chose selon moi et puisque cet outil existe, autant l’utiliser. Pour ce faire il faut tout d’abord installer une fonctionnalité." />
+<meta property="og:description" content="J’ai découvert il y a peu que microsoft à intégré un client SSH nativement dans windows 10. C’est une très bonne chose selon moi et puisque cet outil existe, autant l’utiliser. Pour ce faire il faut tout d’abord installer une fonctionnalité." />
+<link rel="canonical" href="http://localhost:4000/ssh-et-sftp-sur-windows-10/" />
+<meta property="og:url" content="http://localhost:4000/ssh-et-sftp-sur-windows-10/" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="http://localhost:4000/assets/2018/11/ssh_windows_10_thumbnail.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-28T23:07:42+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="http://localhost:4000/assets/2018/11/ssh_windows_10_thumbnail.png" />
+<meta property="twitter:title" content="SSH et SFTP sur Windows 10" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2018-11-28T23:07:42+01:00","datePublished":"2018-11-28T23:07:42+01:00","description":"J’ai découvert il y a peu que microsoft à intégré un client SSH nativement dans windows 10. C’est une très bonne chose selon moi et puisque cet outil existe, autant l’utiliser. Pour ce faire il faut tout d’abord installer une fonctionnalité.","headline":"SSH et SFTP sur Windows 10","image":"http://localhost:4000/assets/2018/11/ssh_windows_10_thumbnail.png","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/ssh-et-sftp-sur-windows-10/"},"url":"http://localhost:4000/ssh-et-sftp-sur-windows-10/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Vixepti" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">SSH et SFTP sur Windows 10</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-11-28T23:07:42+01:00" itemprop="datePublished">Nov 28, 2018
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>J’ai découvert il y a peu que microsoft à intégré un client SSH nativement dans windows 10. C’est une très bonne chose selon moi et puisque cet outil existe, autant l’utiliser. Pour ce faire il faut tout d’abord installer une fonctionnalité.</p>
+
+<!--more-->
+
+<h2 id="installation-du-client-openssh">Installation du client OpenSSH</h2>
+<p>Il est possible d’installer le client OpenSSH de deux façon différentes. La première, graphiquement et la seconde en ligne de commande powershell.</p>
+
+<h3 id="avec-linterface-graphique">Avec l’interface graphique</h3>
+
+<ol>
+  <li>Se rendre dans les <strong>Paramètres Windows</strong> 10.</li>
+  <li>Dans la section <strong>Applications et fonctionnalités</strong>.</li>
+  <li>Cliquer sur <strong>Gérer les fonctionnalités facultatives</strong>.</li>
+  <li>Puis <strong>Ajouter une fonctionnalité</strong>.</li>
+  <li>Dans la liste on retrouve <strong>Client OpenSSH</strong>, cliquer sur <strong>Installer</strong>.</li>
+</ol>
+
+<h3 id="en-powershell">En powershell</h3>
+
+<ol>
+  <li>Lancer <strong>Powershell</strong> en tant qu’administrateur.</li>
+  <li>Exécuter la ligne suivante :</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-WindowsCapability</span><span class="w"> </span><span class="nt">-Online</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">?</span><span class="w"> </span><span class="nx">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s1">'OpenSSH*'</span></code></pre></figure>
+
+<p>Le résultat attendu est le suivant :</p>
+
+<p style="text-align: center;"><a href="/assets/2018/11/01-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/01-SSH-SFTP_Windows_10.png" alt="Résultat commande powershell" /></a></p>
+
+<h2 id="utilisation-du-client-ssh">Utilisation du client SSH</h2>
+
+<p>Une fois l’installation terminée, il est possible d’utiliser le client SSH avec windows 10 de la même façon qu’avec linux. On lance une invite de commande (CMD) et on exécute ssh :</p>
+
+<p style="text-align: center;"><a href="/assets/2018/11/02-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/02-SSH-SFTP_Windows_10.png" alt="Exe SSH sur CMD" /></a></p>
+
+<p>On obtient l’aide, l’installation à donc bien fonctionné, profitons-en pour regarder les paramètres possibles.</p>
+
+<p>Je peux maintenant me connecter à une machine distante en ssh directement dans mon invite avec la commande habituelle sous linux :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">ssh user@host</span></code></pre></figure>
+
+<p style="text-align: center;"><a href="/assets/2018/11/03-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/03-SSH-SFTP_Windows_10.png" alt="SSH Connecté" /></a></p>
+
+<p>Pour utiliser un port différent on peut utiliser l’option -p :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">ssh user@host -p port</span></code></pre></figure>
+
+<h2 id="utilisation-de-sftp">Utilisation de SFTP</h2>
+
+<p>On peut également utiliser SFTP nativement dans windows 10 pour envoyer et recevoir des fichiers. Plus besoin d’installer winscp, filezilla ou autre pour l’envoie et la réception d’un simple fichier.</p>
+
+<p>Voici les options disponibles :</p>
+
+<p style="text-align: center;"><a href="/assets/2018/11/04-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/04-SSH-SFTP_Windows_10.png" alt="Options SFTP" /></a></p>
+
+<p>Avant tout, il faut se connecter au serveur sur lequel on souhaite envoyer ou recevoir des fichiers. Pour ce faire, on utilise la commande suivante :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">sftp user@host</span></code></pre></figure>
+
+<p style="text-align: center;"><a href="/assets/2018/11/05-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/05-SSH-SFTP_Windows_10.png" alt="SFTP connecté" /></a></p>
+
+<p>Nous voilà maintenant connecté. On peut afficher les commandes disponibles avec <em>help</em>.</p>
+
+<p style="text-align: center;"><a href="/assets/2018/11/06-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/06-SSH-SFTP_Windows_10.png" alt="SFTP aide" /></a></p>
+
+<h3 id="envoie-de-fichier">Envoie de fichier</h3>
+
+<p>Pour envoyer un fichier, il faut utiliser la commande suivante :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">sftp&gt;</span><span class="w"> </span>put nom_du_fichier</code></pre></figure>
+
+<p>Pour vérifier le nom du fichier que l’on souhaite envoyer, la commande suivante permet de lister le répertoire courant sur la machine cliente :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">lls</span></code></pre></figure>
+
+<p style="text-align: center;"><a href="/assets/2018/11/07-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/07-SSH-SFTP_Windows_10.png" alt="SFTP lls" /></a></p>
+
+<p>Ici j’envoie le fichier nommé <em>test.txt</em> :</p>
+
+<p style="text-align: center;"><a href="/assets/2018/11/08-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/08-SSH-SFTP_Windows_10.png" alt="SFTP envoie de fichier" /></a></p>
+
+<p>Il est possible de vérifier que le fichier distant existe bien à présent :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">ls</span></code></pre></figure>
+
+<p style="text-align: center;"><a href="/assets/2018/11/09-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/09-SSH-SFTP_Windows_10.png" alt="SFTP envoie de fichier" /></a></p>
+
+<h3 id="réception-de-fichier">Réception de fichier</h3>
+
+<p>Pour recevoir un fichier, la procédure est la même, avec la commande suivante :</p>
+
+<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">get nom_du_fichier</span></code></pre></figure>
+
+<p style="text-align: center;"><a href="/assets/2018/11/10-SSH-SFTP_Windows_10.png"><img src="/assets/2018/11/10-SSH-SFTP_Windows_10.png" alt="SFTP envoie de fichier" /></a></p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>L’intégration de OpenSSH nativement dans Windows 10 est une très bonne chose. Cela permet d’éviter d’installer des logiciels (qu’il faudra par la suite maintenir à jour) pour des fonctionnalités pourtant basiques. Cela ouvre également des possibilités, notamment en terme de scripting. En effet, il est maintenant plus aisé de créer des scripts de manipulation de fichier par exemple à partir d’une machine windows.</p>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">openssh</span></li>    
+        
+          <li><span class="tag">sftp</span></li>    
+        
+          <li><span class="tag">ssh</span></li>    
+        
+          <li><span class="tag">windows 10</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/ssh-et-sftp-sur-windows-10/" hidden></a>
+
+  
+</article>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
