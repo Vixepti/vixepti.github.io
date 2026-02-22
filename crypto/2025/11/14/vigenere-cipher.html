@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang=" en "><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Chiffrement de Vigenere | Vixepti</title>
+<meta name="generator" content="Jekyll v4.0.1" />
+<meta property="og:title" content="Chiffrement de Vigenere" />
+<meta name="author" content="Vixepti" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Le chiffrement de Vigenère est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair." />
+<meta property="og:description" content="Le chiffrement de Vigenère est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair." />
+<link rel="canonical" href="https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html" />
+<meta property="og:url" content="https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html" />
+<meta property="og:site_name" content="Vixepti" />
+<meta property="og:image" content="https://vixepti.fr/assets/2025/11/vigenere-cipher-thumbnail.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-11-14T02:07:42+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://vixepti.fr/assets/2025/11/vigenere-cipher-thumbnail.jpg" />
+<meta property="twitter:title" content="Chiffrement de Vigenere" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Vixepti"},"dateModified":"2025-11-14T02:07:42+01:00","datePublished":"2025-11-14T02:07:42+01:00","description":"Le chiffrement de Vigenère est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair.","headline":"Chiffrement de Vigenere","image":"https://vixepti.fr/assets/2025/11/vigenere-cipher-thumbnail.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html"},"url":"https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://vixepti.fr/feed.xml" title="Vixepti" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+  /* global dataLayer */
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '');
+</script></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Vixepti</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">À propos</a><a class="page-link" href="/categories/">Catégories</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+        <div class="wrapper">
+            <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Chiffrement de Vigenere</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2025-11-14T02:07:42+01:00" itemprop="datePublished">Nov 14, 2025
+      </time>• <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">Vixepti</span></span></p>
+      <hr>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Le <strong>chiffrement de Vigenère</strong> est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair.</p>
+
+<!--more-->
+
+<h2 id="principe">Principe</h2>
+
+<p>Le chiffrement de Vigenère repose sur l’utilisation d’une <strong>clé</strong> pour déterminer le décalage à appliquer à chaque caractère du message clair. La clé est répétée cycliquement pour couvrir l’intégralité du message.</p>
+
+<h3 id="notations">Notations</h3>
+
+<ul>
+  <li><strong>$ P $</strong> : Texte en clair, $ P = p_0, p_1, p_2, \dots, p_n $.</li>
+  <li><strong>$ K $</strong> : Clé, $ K = k_0, k_1, k_2, \dots, k_m $ (répétée si nécessaire).</li>
+  <li><strong>$ C $</strong> : Texte chiffré, $ C = c_0, c_1, c_2, \dots, c_n $.</li>
+</ul>
+
+<h3 id="chiffrement">Chiffrement</h3>
+
+<p>Pour chaque caractère $ i $ du message clair, le caractère chiffré $ c_i $ est calculé comme suit :</p>
+
+\[c_i = (p_i + k_i) \mod 26\]
+
+<ul>
+  <li>$ p_i $ et $ k_i $ sont les valeurs numériques des lettres (A = 0, B = 1, …, Z = 25).</li>
+  <li>Le résultat est converti en lettre (ex. : 0 = A, 1 = B, etc.).</li>
+</ul>
+
+<h3 id="déchiffrement">Déchiffrement</h3>
+
+<p>Pour déchiffrer, on utilise la formule suivante :</p>
+
+\[p_i = (c_i - k_i) \mod 26\]
+
+<p>Si le résultat est négatif, on ajoute 26 pour obtenir un nombre entre 0 et 25.</p>
+
+<hr />
+
+<h2 id="table-de-vigenère">Table de Vigenère</h2>
+
+<p>La <strong>table de Vigenère</strong> (ou carré de Vigenère) permet de visualiser le processus de chiffrement. Chaque ligne correspond à un décalage différent, déterminé par la clé.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+      <th>E</th>
+      <th>F</th>
+      <th>G</th>
+      <th>H</th>
+      <th>I</th>
+      <th>J</th>
+      <th>K</th>
+      <th>L</th>
+      <th>M</th>
+      <th>N</th>
+      <th>O</th>
+      <th>P</th>
+      <th>Q</th>
+      <th>R</th>
+      <th>S</th>
+      <th>T</th>
+      <th>U</th>
+      <th>V</th>
+      <th>W</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A</strong></td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td><strong>D</strong></td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td><strong>E</strong></td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td><strong>F</strong></td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td><strong>G</strong></td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td><strong>H</strong></td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <td><strong>I</strong></td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td><strong>J</strong></td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td><strong>K</strong></td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+    </tr>
+    <tr>
+      <td><strong>L</strong></td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <td><strong>M</strong></td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td><strong>N</strong></td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td><strong>O</strong></td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td><strong>P</strong></td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td><strong>Q</strong></td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+    </tr>
+    <tr>
+      <td><strong>R</strong></td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+    </tr>
+    <tr>
+      <td><strong>S</strong></td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <td><strong>T</strong></td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td><strong>U</strong></td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td><strong>V</strong></td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+    </tr>
+    <tr>
+      <td><strong>W</strong></td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+    </tr>
+    <tr>
+      <td><strong>X</strong></td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+    </tr>
+    <tr>
+      <td><strong>Y</strong></td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><strong>Z</strong></td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="exemple">Exemple</h2>
+
+<h3 id="chiffrement-1">Chiffrement</h3>
+
+<ul>
+  <li><strong>Message clair</strong> : “HELLO FRIEND”</li>
+  <li><strong>Clé</strong> : “ABC”</li>
+</ul>
+
+<h4 id="conversion-en-valeurs-numériques">Conversion en valeurs numériques</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Caractère</th>
+      <th>H</th>
+      <th>E</th>
+      <th>L</th>
+      <th>L</th>
+      <th>O</th>
+      <th> </th>
+      <th>F</th>
+      <th>R</th>
+      <th>I</th>
+      <th>E</th>
+      <th>N</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Valeur</td>
+      <td>7</td>
+      <td>4</td>
+      <td>11</td>
+      <td>11</td>
+      <td>14</td>
+      <td>26</td>
+      <td>5</td>
+      <td>17</td>
+      <td>8</td>
+      <td>4</td>
+      <td>13</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Caractère (Clé)</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Valeur</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="calcul-du-texte-chiffré">Calcul du texte chiffré</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>$ p_i $</th>
+      <th>$ k_i $</th>
+      <th>$ (p_i + k_i) \mod 26 $</th>
+      <th>$ c_i $</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>7</td>
+      <td>0</td>
+      <td>7</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2</td>
+      <td>13</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1</td>
+      <td>15</td>
+      <td>P</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>2</td>
+      <td>0</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>1</td>
+      <td>18</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>10</td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>1</td>
+      <td>14</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Texte chiffré</strong> : “HFNLP AFSKEOF”</p>
+
+<p><em>(Note : L’espace a été ignoré dans cet exemple. En pratique, on peut le conserver ou le supprimer selon les besoins.)</em></p>
+
+<h3 id="déchiffrement-1">Déchiffrement</h3>
+
+<p>Pour déchiffrer, on applique la formule $ p_i = (c_i - k_i) \mod 26 $.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$ c_i $</th>
+      <th>$ k_i $</th>
+      <th>$ (c_i - k_i) \mod 26 $</th>
+      <th>$ p_i $</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>7</td>
+      <td>0</td>
+      <td>7</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>1</td>
+      <td>14</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>2</td>
+      <td>24 (car -2 + 26 = 24)</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>1</td>
+      <td>17</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2</td>
+      <td>8</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1</td>
+      <td>13</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>(Note : L’espace a été mal géré dans cet exemple. Pour un déchiffrement correct, il faut ignorer les espaces ou les traiter séparément.)</em></p>
+
+<hr />
+
+<h2 id="cas-particuliers">Cas particuliers</h2>
+
+<ol>
+  <li><strong>Gestion des espaces et caractères spéciaux</strong> :
+    <ul>
+      <li>On peut ignorer les espaces et les caractères non alphabétiques.</li>
+      <li>Ou les conserver en les chiffrant avec un décalage fixe (ex. : espace = 26).</li>
+    </ul>
+  </li>
+  <li><strong>Clé plus courte que le message</strong> :
+    <ul>
+      <li>La clé est répétée cycliquement pour couvrir tout le message.</li>
+    </ul>
+  </li>
+  <li><strong>Clé plus longue que le message</strong> :
+    <ul>
+      <li>Seule la partie de la clé correspondant à la longueur du message est utilisée.</li>
+    </ul>
+  </li>
+  <li><strong>Sensibilité à la casse</strong> :
+    <ul>
+      <li>Le chiffrement est généralement insensible à la casse (toutes les lettres sont converties en majuscules ou minuscules).</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="attaques-sur-le-chiffrement-de-vigenère">Attaques sur le chiffrement de Vigenère</h2>
+
+<p>Malgré sa robustesse apparente, le chiffrement de Vigenère est vulnérable à plusieurs attaques, notamment :</p>
+
+<h3 id="analyse-des-fréquences">Analyse des fréquences</h3>
+
+<p>Si la clé est courte, le texte chiffré présente des motifs répétitifs qui peuvent être exploités pour deviner la longueur de la clé. Une fois la longueur de la clé déterminée, chaque sous-texte peut être attaqué comme un chiffrement de César.</p>
+
+<h3 id="méthode-de-kasiski">Méthode de Kasiski</h3>
+
+<p>Cette méthode consiste à repérer des séquences de lettres répétées dans le texte chiffré. La distance entre ces répétitions est souvent un multiple de la longueur de la clé.</p>
+
+<h3 id="indice-de-coïncidence">Indice de coïncidence</h3>
+
+<p>L’indice de coïncidence permet d’estimer la longueur de la clé en comparant la fréquence des lettres dans le texte chiffré à celle d’un texte aléatoire.</p>
+
+<h3 id="attaque-par-force-brute">Attaque par force brute</h3>
+
+<p>Si la clé est courte, une attaque par force brute (essai de toutes les combinaisons possibles) peut être efficace.</p>
+
+<hr />
+
+<h2 id="algorithmes">Algorithmes</h2>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">EVigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">key_repeated</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">plaintext</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">key_repeated</span><span class="p">.</span><span class="n">upper</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">p_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">k_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">c_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_val</span> <span class="o">+</span> <span class="n">k_val</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span>
+            <span class="n">ciphertext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">c_val</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ciphertext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>  <span class="c1"># Garde les caractères non alphabétiques (espaces, ponctuation, etc.)
+</span>
+    <span class="k">return</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">DVigenere</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">plaintext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">key_repeated</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">key_repeated</span><span class="p">.</span><span class="n">upper</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">c_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">k_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">p_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_val</span> <span class="o">-</span> <span class="n">k_val</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span>
+            <span class="n">plaintext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">p_val</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plaintext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>  <span class="c1"># Garde les caractères non alphabétiques
+</span>
+    <span class="k">return</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span></code></pre></figure>
+
+  </div>
+
+  
+    <hr><br>
+    <span>Tags :</span>
+    <div class="tags">
+      <ul>
+        
+          <li><span class="tag">cryptographie</span></li>    
+        
+          <li><span class="tag">vigenere</span></li>    
+        
+      </ul>
+    </div>
+  <a class="u-url" href="/crypto/2025/11/14/vigenere-cipher.html" hidden></a>
+
+  
+</article>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            processEscapes: true
+        }
+    });
+</script>
+<script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+</script>
+
+        </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Vixepti</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Vixepti</li><li><a class="u-email" href="mailto:contact@vixepti.fr">contact@vixepti.fr</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://www.twitter.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">vixepti</span></a></li><li><a href="https://youtube.com/vixepti"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">vixepti</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

@@ -1,4 +1,1186 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-11-09T19:43:53+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Vixepti</title><subtitle>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</subtitle><entry><title type="html">Writeup - FCSC-2020 - Web - Revision</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Revision" /><published>2020-05-05T19:00:13+02:00</published><updated>2020-05-05T19:00:13+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-revision.html"><![CDATA[<p>Petit writeup sur un challenge que j’ai trouvé très intéressant. <em>Revision</em> est un challenge web du <em>France Cybersecurity Challenge</em>. <!--more--></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="https://vixepti.fr/feed.xml" rel="self" type="application/atom+xml" /><link href="https://vixepti.fr/" rel="alternate" type="text/html" /><updated>2026-02-22T11:50:46+01:00</updated><id>https://vixepti.fr/feed.xml</id><title type="html">Vixepti</title><subtitle>Administration systèmes et réseaux, Sécurité informatique, Hacking, Bricolage et autres joyeusetés...</subtitle><entry><title type="html">Chiffrement de Vigenere</title><link href="https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html" rel="alternate" type="text/html" title="Chiffrement de Vigenere" /><published>2025-11-14T02:07:42+01:00</published><updated>2025-11-14T02:07:42+01:00</updated><id>https://vixepti.fr/crypto/2025/11/14/vigenere-cipher</id><content type="html" xml:base="https://vixepti.fr/crypto/2025/11/14/vigenere-cipher.html"><![CDATA[<p>Le <strong>chiffrement de Vigenère</strong> est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair.</p>
+
+<!--more-->
+
+<h2 id="principe">Principe</h2>
+
+<p>Le chiffrement de Vigenère repose sur l’utilisation d’une <strong>clé</strong> pour déterminer le décalage à appliquer à chaque caractère du message clair. La clé est répétée cycliquement pour couvrir l’intégralité du message.</p>
+
+<h3 id="notations">Notations</h3>
+
+<ul>
+  <li><strong>$ P $</strong> : Texte en clair, $ P = p_0, p_1, p_2, \dots, p_n $.</li>
+  <li><strong>$ K $</strong> : Clé, $ K = k_0, k_1, k_2, \dots, k_m $ (répétée si nécessaire).</li>
+  <li><strong>$ C $</strong> : Texte chiffré, $ C = c_0, c_1, c_2, \dots, c_n $.</li>
+</ul>
+
+<h3 id="chiffrement">Chiffrement</h3>
+
+<p>Pour chaque caractère $ i $ du message clair, le caractère chiffré $ c_i $ est calculé comme suit :</p>
+
+\[c_i = (p_i + k_i) \mod 26\]
+
+<ul>
+  <li>$ p_i $ et $ k_i $ sont les valeurs numériques des lettres (A = 0, B = 1, …, Z = 25).</li>
+  <li>Le résultat est converti en lettre (ex. : 0 = A, 1 = B, etc.).</li>
+</ul>
+
+<h3 id="déchiffrement">Déchiffrement</h3>
+
+<p>Pour déchiffrer, on utilise la formule suivante :</p>
+
+\[p_i = (c_i - k_i) \mod 26\]
+
+<p>Si le résultat est négatif, on ajoute 26 pour obtenir un nombre entre 0 et 25.</p>
+
+<hr />
+
+<h2 id="table-de-vigenère">Table de Vigenère</h2>
+
+<p>La <strong>table de Vigenère</strong> (ou carré de Vigenère) permet de visualiser le processus de chiffrement. Chaque ligne correspond à un décalage différent, déterminé par la clé.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>D</th>
+      <th>E</th>
+      <th>F</th>
+      <th>G</th>
+      <th>H</th>
+      <th>I</th>
+      <th>J</th>
+      <th>K</th>
+      <th>L</th>
+      <th>M</th>
+      <th>N</th>
+      <th>O</th>
+      <th>P</th>
+      <th>Q</th>
+      <th>R</th>
+      <th>S</th>
+      <th>T</th>
+      <th>U</th>
+      <th>V</th>
+      <th>W</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>A</strong></td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+    </tr>
+    <tr>
+      <td><strong>B</strong></td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td><strong>C</strong></td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <td><strong>D</strong></td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <td><strong>E</strong></td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <td><strong>F</strong></td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td><strong>G</strong></td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td><strong>H</strong></td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <td><strong>I</strong></td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td><strong>J</strong></td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td><strong>K</strong></td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+    </tr>
+    <tr>
+      <td><strong>L</strong></td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <td><strong>M</strong></td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td><strong>N</strong></td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <td><strong>O</strong></td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td><strong>P</strong></td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td><strong>Q</strong></td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+    </tr>
+    <tr>
+      <td><strong>R</strong></td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+    </tr>
+    <tr>
+      <td><strong>S</strong></td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <td><strong>T</strong></td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td><strong>U</strong></td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+    </tr>
+    <tr>
+      <td><strong>V</strong></td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+    </tr>
+    <tr>
+      <td><strong>W</strong></td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+    </tr>
+    <tr>
+      <td><strong>X</strong></td>
+      <td>X</td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+    </tr>
+    <tr>
+      <td><strong>Y</strong></td>
+      <td>Y</td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+    </tr>
+    <tr>
+      <td><strong>Z</strong></td>
+      <td>Z</td>
+      <td>A</td>
+      <td>B</td>
+      <td>C</td>
+      <td>D</td>
+      <td>E</td>
+      <td>F</td>
+      <td>G</td>
+      <td>H</td>
+      <td>I</td>
+      <td>J</td>
+      <td>K</td>
+      <td>L</td>
+      <td>M</td>
+      <td>N</td>
+      <td>O</td>
+      <td>P</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>S</td>
+      <td>T</td>
+      <td>U</td>
+      <td>V</td>
+      <td>W</td>
+      <td>X</td>
+      <td>Y</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="exemple">Exemple</h2>
+
+<h3 id="chiffrement-1">Chiffrement</h3>
+
+<ul>
+  <li><strong>Message clair</strong> : “HELLO FRIEND”</li>
+  <li><strong>Clé</strong> : “ABC”</li>
+</ul>
+
+<h4 id="conversion-en-valeurs-numériques">Conversion en valeurs numériques</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>Caractère</th>
+      <th>H</th>
+      <th>E</th>
+      <th>L</th>
+      <th>L</th>
+      <th>O</th>
+      <th> </th>
+      <th>F</th>
+      <th>R</th>
+      <th>I</th>
+      <th>E</th>
+      <th>N</th>
+      <th>D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Valeur</td>
+      <td>7</td>
+      <td>4</td>
+      <td>11</td>
+      <td>11</td>
+      <td>14</td>
+      <td>26</td>
+      <td>5</td>
+      <td>17</td>
+      <td>8</td>
+      <td>4</td>
+      <td>13</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Caractère (Clé)</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Valeur</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="calcul-du-texte-chiffré">Calcul du texte chiffré</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>$ p_i $</th>
+      <th>$ k_i $</th>
+      <th>$ (p_i + k_i) \mod 26 $</th>
+      <th>$ c_i $</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>7</td>
+      <td>0</td>
+      <td>7</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2</td>
+      <td>13</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1</td>
+      <td>15</td>
+      <td>P</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>2</td>
+      <td>0</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>1</td>
+      <td>18</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2</td>
+      <td>10</td>
+      <td>K</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>1</td>
+      <td>14</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Texte chiffré</strong> : “HFNLP AFSKEOF”</p>
+
+<p><em>(Note : L’espace a été ignoré dans cet exemple. En pratique, on peut le conserver ou le supprimer selon les besoins.)</em></p>
+
+<h3 id="déchiffrement-1">Déchiffrement</h3>
+
+<p>Pour déchiffrer, on applique la formule $ p_i = (c_i - k_i) \mod 26 $.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$ c_i $</th>
+      <th>$ k_i $</th>
+      <th>$ (c_i - k_i) \mod 26 $</th>
+      <th>$ p_i $</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>7</td>
+      <td>0</td>
+      <td>7</td>
+      <td>H</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>2</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0</td>
+      <td>11</td>
+      <td>L</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>1</td>
+      <td>14</td>
+      <td>O</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>2</td>
+      <td>24 (car -2 + 26 = 24)</td>
+      <td>Y</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0</td>
+      <td>5</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>1</td>
+      <td>17</td>
+      <td>R</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2</td>
+      <td>8</td>
+      <td>I</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0</td>
+      <td>4</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1</td>
+      <td>13</td>
+      <td>N</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>(Note : L’espace a été mal géré dans cet exemple. Pour un déchiffrement correct, il faut ignorer les espaces ou les traiter séparément.)</em></p>
+
+<hr />
+
+<h2 id="cas-particuliers">Cas particuliers</h2>
+
+<ol>
+  <li><strong>Gestion des espaces et caractères spéciaux</strong> :
+    <ul>
+      <li>On peut ignorer les espaces et les caractères non alphabétiques.</li>
+      <li>Ou les conserver en les chiffrant avec un décalage fixe (ex. : espace = 26).</li>
+    </ul>
+  </li>
+  <li><strong>Clé plus courte que le message</strong> :
+    <ul>
+      <li>La clé est répétée cycliquement pour couvrir tout le message.</li>
+    </ul>
+  </li>
+  <li><strong>Clé plus longue que le message</strong> :
+    <ul>
+      <li>Seule la partie de la clé correspondant à la longueur du message est utilisée.</li>
+    </ul>
+  </li>
+  <li><strong>Sensibilité à la casse</strong> :
+    <ul>
+      <li>Le chiffrement est généralement insensible à la casse (toutes les lettres sont converties en majuscules ou minuscules).</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="attaques-sur-le-chiffrement-de-vigenère">Attaques sur le chiffrement de Vigenère</h2>
+
+<p>Malgré sa robustesse apparente, le chiffrement de Vigenère est vulnérable à plusieurs attaques, notamment :</p>
+
+<h3 id="analyse-des-fréquences">Analyse des fréquences</h3>
+
+<p>Si la clé est courte, le texte chiffré présente des motifs répétitifs qui peuvent être exploités pour deviner la longueur de la clé. Une fois la longueur de la clé déterminée, chaque sous-texte peut être attaqué comme un chiffrement de César.</p>
+
+<h3 id="méthode-de-kasiski">Méthode de Kasiski</h3>
+
+<p>Cette méthode consiste à repérer des séquences de lettres répétées dans le texte chiffré. La distance entre ces répétitions est souvent un multiple de la longueur de la clé.</p>
+
+<h3 id="indice-de-coïncidence">Indice de coïncidence</h3>
+
+<p>L’indice de coïncidence permet d’estimer la longueur de la clé en comparant la fréquence des lettres dans le texte chiffré à celle d’un texte aléatoire.</p>
+
+<h3 id="attaque-par-force-brute">Attaque par force brute</h3>
+
+<p>Si la clé est courte, une attaque par force brute (essai de toutes les combinaisons possibles) peut être efficace.</p>
+
+<hr />
+
+<h2 id="algorithmes">Algorithmes</h2>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">EVigenere</span><span class="p">(</span><span class="n">plaintext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">key_repeated</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">plaintext</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">key_repeated</span><span class="p">.</span><span class="n">upper</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">p</span><span class="p">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">p_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">k_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">c_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_val</span> <span class="o">+</span> <span class="n">k_val</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span>
+            <span class="n">ciphertext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">c_val</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ciphertext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>  <span class="c1"># Garde les caractères non alphabétiques (espaces, ponctuation, etc.)
+</span>
+    <span class="k">return</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">DVigenere</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">plaintext</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">key_repeated</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))[:</span><span class="nb">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">key_repeated</span><span class="p">.</span><span class="n">upper</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">.</span><span class="n">isalpha</span><span class="p">():</span>
+            <span class="n">c_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">k_val</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span>
+            <span class="n">p_val</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_val</span> <span class="o">-</span> <span class="n">k_val</span><span class="p">)</span> <span class="o">%</span> <span class="mi">26</span>
+            <span class="n">plaintext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">p_val</span> <span class="o">+</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plaintext</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>  <span class="c1"># Garde les caractères non alphabétiques
+</span>
+    <span class="k">return</span> <span class="s">''</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span></code></pre></figure>]]></content><author><name>Vixepti</name></author><category term="crypto" /><category term="cryptographie" /><category term="vigenere" /><summary type="html"><![CDATA[Le chiffrement de Vigenère est une méthode de chiffrement par substitution poly-alphabétique, considérée comme l’une des plus simples et des plus connues. Il améliore le chiffrement de César en utilisant une clé pour varier les décalages appliqués aux lettres du message clair.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2025/11/vigenere-cipher-thumbnail.jpg" /><media:content medium="image" url="https://vixepti.fr/assets/2025/11/vigenere-cipher-thumbnail.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - Revision</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-revision.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Revision" /><published>2020-05-05T19:00:13+02:00</published><updated>2020-05-05T19:00:13+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-revision</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-revision.html"><![CDATA[<p>Petit writeup sur un challenge que j’ai trouvé très intéressant. <em>Revision</em> est un challenge web du <em>France Cybersecurity Challenge</em>. <!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 
@@ -50,7 +1232,7 @@
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{8f95b0fc1a793e102a65bae9c473e9a3c2893cf083a539636b082605c40c00c1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Petit writeup sur un challenge que j’ai trouvé très intéressant. Revision est un challenge web du France Cybersecurity Challenge.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - Enter The Dungeon</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Enter The Dungeon" /><published>2020-05-05T19:00:12+02:00</published><updated>2020-05-05T19:00:12+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html"><![CDATA[<p>Hello, ceci est mon writeup pour le challenge <em>Enter The Dungeon</em> du <em>France Cybersecurity Challenge 2020</em>. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.<!--more--></p>
+<p>Le flag est donc : <strong><em>FCSC{8f95b0fc1a793e102a65bae9c473e9a3c2893cf083a539636b082605c40c00c1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Petit writeup sur un challenge que j’ai trouvé très intéressant. Revision est un challenge web du France Cybersecurity Challenge.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - Enter The Dungeon</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - Enter The Dungeon" /><published>2020-05-05T19:00:12+02:00</published><updated>2020-05-05T19:00:12+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-enter-the-dungeon.html"><![CDATA[<p>Hello, ceci est mon writeup pour le challenge <em>Enter The Dungeon</em> du <em>France Cybersecurity Challenge 2020</em>. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.<!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 <blockquote>
@@ -170,7 +1352,7 @@ The flag is hidden into the dungeon ! You should come here as the <span class="n
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{f67aaeb3b15152b216cb1addbf0236c66f9d81c4487c4db813c1de8603bb2b5b}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="web" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Hello, ceci est mon writeup pour le challenge Enter The Dungeon du France Cybersecurity Challenge 2020. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - RainbowPages</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - RainbowPages" /><published>2020-05-05T19:00:11+02:00</published><updated>2020-05-05T19:00:11+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html"><![CDATA[<p>Writeup sur l’épreuve <em>RainbowPages</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
+<p>Le flag est donc : <strong><em>FCSC{f67aaeb3b15152b216cb1addbf0236c66f9d81c4487c4db813c1de8603bb2b5b}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="web" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Hello, ceci est mon writeup pour le challenge Enter The Dungeon du France Cybersecurity Challenge 2020. J’ai passé un sacré moment dessus (je ne suis pas du tout expériementé dans le domaine du web), ça méritait bien un writeup.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Web - RainbowPages</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Web - RainbowPages" /><published>2020-05-05T19:00:11+02:00</published><updated>2020-05-05T19:00:11+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-rainbowpages.html"><![CDATA[<p>Writeup sur l’épreuve <em>RainbowPages</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 <blockquote>
@@ -225,7 +1407,7 @@ Cookie: PHPSESSID=a6404b49723f89736210beb430d00106; session=eyJjc3JmX3Rva2VuIjoi
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{1ef3c5c3ac3c56eb178bafea15b07b82c4a0ea8184d76a722337dca108add41a}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Writeup sur l’épreuve RainbowPages du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée" /><published>2020-05-05T19:00:10+02:00</published><updated>2020-05-05T19:00:10+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html"><![CDATA[<p>Encore un writeup sur la série <em>Académie de l’investigation</em>, pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Porte dérobée</em>. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire. <!--more--></p>
+<p>Le flag est donc : <strong><em>FCSC{1ef3c5c3ac3c56eb178bafea15b07b82c4a0ea8184d76a722337dca108add41a}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Writeup sur l’épreuve RainbowPages du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Porte Dérobée" /><published>2020-05-05T19:00:10+02:00</published><updated>2020-05-05T19:00:10+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-porte-derobee.html"><![CDATA[<p>Encore un writeup sur la série <em>Académie de l’investigation</em>, pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Porte dérobée</em>. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire. <!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 
@@ -298,7 +1480,7 @@ TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             s
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{36280:fd:6663:7363:1000:55cf:b9c6:f41d:cc24:2020-03-26 23:24:20}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Encore un writeup sur la série Académie de l’investigation, pour le France CyberSecurity Challenge de 2020, sur le challenge Porte dérobée. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts" /><published>2020-05-05T19:00:09+02:00</published><updated>2020-05-05T19:00:09+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html"><![CDATA[<p>Toujours dans la série <em>Académie de l’investigation</em>, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Premier Artéfacts</em>. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau. <!--more--></p>
+<p>Le flag est donc : <strong><em>FCSC{36280:fd:6663:7363:1000:55cf:b9c6:f41d:cc24:2020-03-26 23:24:20}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Encore un writeup sur la série Académie de l’investigation, pour le France CyberSecurity Challenge de 2020, sur le challenge Porte dérobée. Le but est de retrouver des infos sur une porte dérobée dans un dump mémoire.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - Premier artéfacts" /><published>2020-05-05T19:00:09+02:00</published><updated>2020-05-05T19:00:09+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-premier-artefacts.html"><![CDATA[<p>Toujours dans la série <em>Académie de l’investigation</em>, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge <em>Premier Artéfacts</em>. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau. <!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 
@@ -387,7 +1569,7 @@ TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             s
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{pool-xfconfd:nmap -sS -sV 10.42.42.0/24:13}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée" /><published>2020-05-05T19:00:08+02:00</published><updated>2020-05-05T19:00:08+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html"><![CDATA[<p>Voici mon writeup sur la première épreuve de forensic de la série <em>Académie de l’investigation</em> pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit. <!--more--></p>
+<p>Le flag est donc : <strong><em>FCSC{pool-xfconfd:nmap -sS -sV 10.42.42.0/24:13}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Toujours dans la série Académie de l’investigation, ceci est mon writeup pour le France CyberSecurity Challenge de 2020, sur le challenge Premier Artéfacts. Le but est de retrouver des infos sur un processus, une commande et une connexion réseau.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Académie de l’investigation - C’est la rentrée" /><published>2020-05-05T19:00:08+02:00</published><updated>2020-05-05T19:00:08+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-la-rentre</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-la-rentre.html"><![CDATA[<p>Voici mon writeup sur la première épreuve de forensic de la série <em>Académie de l’investigation</em> pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit. <!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 
@@ -464,7 +1646,7 @@ TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             s
 
 <h2 id="création-du-profile-volatility">Création du profile volatility</h2>
 
-<p>Grâce aux informations récupérées avec strings, je créé un profile volatility pour Debian bullseye/sid 5.4.0-4-amd64. Ce profile me permettra de réaliser les prochains challenge de cette série.</p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Voici mon writeup sur la première épreuve de forensic de la série Académie de l’investigation pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Find Me</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Find Me" /><published>2020-05-05T19:00:07+02:00</published><updated>2020-05-05T19:00:07+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-find-me.html"><![CDATA[<p><em>Find Me</em> est une des épreuves de forensic du <em>France Cybersecurity Challenge 2020</em> qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.<!--more--></p>
+<p>Grâce aux informations récupérées avec strings, je créé un profile volatility pour Debian bullseye/sid 5.4.0-4-amd64. Ce profile me permettra de réaliser les prochains challenge de cette série.</p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="forensic" /><category term="ctf" /><category term="writeup" /><summary type="html"><![CDATA[Voici mon writeup sur la première épreuve de forensic de la série Académie de l’investigation pour France CyberSecurity Challenge de 2020. Le but est de retrouver des infos sur l’utilisateur et la machine dont un dump mémoire a été fournit.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Find Me</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-find-me.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Find Me" /><published>2020-05-05T19:00:07+02:00</published><updated>2020-05-05T19:00:07+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-find-me</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-find-me.html"><![CDATA[<p><em>Find Me</em> est une des épreuves de forensic du <em>France Cybersecurity Challenge 2020</em> qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.<!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 <blockquote>
@@ -520,7 +1702,7 @@ TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             s
 
 <h1 id="flag">Flag</h1>
 
-<p>La flag est donc : <strong><em>FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Petite Frappe 2</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Petite Frappe 2" /><published>2020-05-05T19:00:06+02:00</published><updated>2020-05-05T19:00:06+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html"><![CDATA[<p>Comme pour le <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html">Petite frappe 1</a>, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…<!--more--></p>
+<p>La flag est donc : <strong><em>FCSC{750322d61518672328c856ff72fac0a80220835b9864f60451c771ce6f9aeca1}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Find Me est une des épreuves de forensic du France Cybersecurity Challenge 2020 qui m’a apporté le plus de satisfaction. En effet ayant suivi la formation gratuite de 8h sur autopsy (que je ne connaissais pas avant), j’ai pu appliquer ce que j’ai appris sur cette formation.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Forensics - Petite Frappe 2</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Forensics - Petite Frappe 2" /><published>2020-05-05T19:00:06+02:00</published><updated>2020-05-05T19:00:06+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html"><![CDATA[<p>Comme pour le <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html">Petite frappe 1</a>, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…<!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 
@@ -580,7 +1762,7 @@ TCP      10.42.42.131    :51858 10.42.42.128    :  445 ESTABLISHED             s
 <p>En excécutant ce script sur le fichier text fournit :</p>
 
 <figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@microwave]$</span><span class="w"> </span><span class="nb">cat </span>petite_frappe_2.txt | python2.7 xinput-decoder.py 
-<span class="go">l a space s o l u t i o n space a v e c space x i n p u t space n e space s e m b l e space p a s space s u p e r space p r a t i q u e space a space d e c o d e r Shift_R semicolon space l e space f l a g space e s t space u n underscore c l a v i e r underscore a z e r t y underscore e n underscore v a u t underscore d e u x</span></code></pre></figure>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Intro - Babel Web</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Intro - Babel Web" /><published>2020-05-05T19:00:05+02:00</published><updated>2020-05-05T19:00:05+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-babel-web.html"><![CDATA[<p>Mon writeup sur l’épreuve <em>Babel Web</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
+<span class="go">l a space s o l u t i o n space a v e c space x i n p u t space n e space s e m b l e space p a s space s u p e r space p r a t i q u e space a space d e c o d e r Shift_R semicolon space l e space f l a g space e s t space u n underscore c l a v i e r underscore a z e r t y underscore e n underscore v a u t underscore d e u x</span></code></pre></figure>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[Comme pour le Petite frappe 1, j’ai flag salement. Je vais éditer rapidement avec une amélioration dans les prochains jours…]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Intro - Babel Web</title><link href="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-babel-web.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Intro - Babel Web" /><published>2020-05-05T19:00:05+02:00</published><updated>2020-05-05T19:00:05+02:00</updated><id>https://vixepti.fr/writeup/2020/05/05/fcsc-2020-babel-web</id><content type="html" xml:base="https://vixepti.fr/writeup/2020/05/05/fcsc-2020-babel-web.html"><![CDATA[<p>Mon writeup sur l’épreuve <em>Babel Web</em> du <em>France Cybersecurity Challenge 2020</em>.<!--more--></p>
 
 <h1 id="énoncé">Énoncé</h1>
 <blockquote>
@@ -646,85 +1828,4 @@ index.php</span></code></pre></figure>
 
 <h1 id="flag">Flag</h1>
 
-<p>Le flag est donc : <strong><em>FCSC{5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Mon writeup sur l’épreuve Babel Web du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Writeup - FCSC-2020 - Intro - Petite Frappe 1</title><link href="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html" rel="alternate" type="text/html" title="Writeup - FCSC-2020 - Intro - Petite Frappe 1" /><published>2020-05-05T19:00:04+02:00</published><updated>2020-05-05T19:00:04+02:00</updated><id>http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1</id><content type="html" xml:base="http://localhost:4000/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-1.html"><![CDATA[<p>J’ai pas mal hésité à publier ce writeup ainsi que celui pour le challenge <a href="/writeup/2020/05/05/fcsc-2020-writeup-petite-frappe-2.html">Petite frappe 2</a>, parce que j’ai flag vraiment salement. Mais finalement je publie avec pour objectif d’apporter une amélioration dans les prochains jours pour faire ça plus proprement. Ça soulagera ma conscience.<!--more--></p>
-
-<h1 id="énoncé">Énoncé</h1>
-
-<blockquote>
-  <p>Lors de l’investigation d’un poste GNU/Linux, vous analysez un fichier qui semble être généré par un programme d’enregistrement de frappes de clavier (enregistrement de l’activité de chaque touche utilisée).</p>
-
-  <p>Retrouvez ce qui a bien pu être écrit par l’utilisateur de ce poste à l’aide de ce fichier !</p>
-
-  <p>Format du flag : Pour valider ce challenge, vous devez insérer le contenu de ce qui a été écrit sur le clavier de ce poste dans la balise suivante <em>FCSC{xxxxxx}</em> puis soumettre votre réponse.</p>
-</blockquote>
-
-<h1 id="solution">Solution</h1>
-
-<p>J’ai relevé chaque lettre de chaque <em>EV_KEY</em>. Exemple :</p>
-
-<blockquote>
-  <p>Event: time 1584656705.424839, ————– SYN_REPORT ————</p>
-
-  <p>Event: time 1584656706.404214, type 4 (EV_MSC), code 4 (MSC_SCAN), value 16</p>
-
-  <p>Event: time 1584656706.404214, type 1 (EV_KEY), code 22 (<strong>KEY_U</strong>), value 1</p>
-
-  <p>Event: time 1584656706.404214, ————– SYN_REPORT ————</p>
-
-  <p>Event: time 1584656706.508350, type 4 (EV_MSC), code 4 (MSC_SCAN), value 16</p>
-
-  <p>Event: time 1584656706.508350, type 1 (EV_KEY), code 22 (<strong>KEY_U</strong>), value 0</p>
-
-  <p>Event: time 1584656706.508350, ————– SYN_REPORT ————</p>
-
-  <p>Event: time 1584656706.674591, type 4 (EV_MSC), code 4 (MSC_SCAN), value 31</p>
-
-  <p>Event: time 1584656706.674591, type 1 (EV_KEY), code 49 (<strong>KEY_N</strong>), value 1</p>
-</blockquote>
-
-<p>Ça donne : <strong>UUN</strong></p>
-
-<h1 id="flag">Flag</h1>
-
-<p>Le flag est donc : <strong><em>FCSC{UNEGENTILLEINTRODUCTION}</em></strong></p>
-
-<h1 id="edit">Edit</h1>
-
-<p>Bon du coup, comme promis j’ai rapidement repris ce challenge plus proprement. J’utilise donc la commande <strong>awk</strong> :</p>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">[vixepti@computer]$</span><span class="w"> </span><span class="nb">cat </span>petite_frappe_1.txt | <span class="nb">grep</span> <span class="s1">'EV_KEY'</span> | <span class="nb">awk</span> <span class="s1">'{if(NR % 2) print substr($9,6,1)}'</span> <span class="nv">ORS</span><span class="o">=</span><span class="s1">''</span>
-<span class="go">UNEGENTILLEINTRODDCTION</span></code></pre></figure>
-
-<p>Et pour mieux comprendre, je vais détailler :</p>
-
-<ul>
-  <li>J’affiche le contenu du fichier fournit :</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">cat petite_frappe_1.txt</span></code></pre></figure>
-
-<ul>
-  <li>Je filtre sur la chaîne de caractères <em>EV_KEY</em> :</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">| grep 'EV_KEY'</span></code></pre></figure>
-
-<ul>
-  <li>J’affiche uniquement une ligne sur deux (sinon je me retrouve avec chaque caractère en double) :</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">| awk '{if(NR % 2)</span></code></pre></figure>
-
-<ul>
-  <li>J’affiche le 6<sup>ème</sup> caractère de la 9<sup>ème</sup> colonne (celle qui contient la touche clavier : KEY_?) :</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="gp">print substr($</span>9,6,1<span class="o">)}</span><span class="s1">'</span></code></pre></figure>
-
-<ul>
-  <li>Et enfin, je supprime l’<em>output record separator</em> (par défaut : \n) pour avoir tous les caractères sur une seule ligne :</li>
-</ul>
-
-<figure class="highlight"><pre><code class="language-shell_session" data-lang="shell_session"><span class="go">ORS=''</span></code></pre></figure>
-
-<p>C’était finalement pas si compliqué, j’aurai même gagné du temps je pense…</p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="forensic" /><summary type="html"><![CDATA[J’ai pas mal hésité à publier ce writeup ainsi que celui pour le challenge Petite frappe 2, parce que j’ai flag vraiment salement. Mais finalement je publie avec pour objectif d’apporter une amélioration dans les prochains jours pour faire ça plus proprement. Ça soulagera ma conscience.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/2020/05/FCSC.png" /><media:content medium="image" url="http://localhost:4000/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p>Le flag est donc : <strong><em>FCSC{5d969396bb5592634b31d4f0846d945e4befbb8c470b055ef35c0ac090b9b8b7}</em></strong></p>]]></content><author><name>Vixepti</name></author><category term="writeup" /><category term="FCSC" /><category term="ctf" /><category term="writeup" /><category term="web" /><summary type="html"><![CDATA[Mon writeup sur l’épreuve Babel Web du France Cybersecurity Challenge 2020.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://vixepti.fr/assets/2020/05/FCSC.png" /><media:content medium="image" url="https://vixepti.fr/assets/2020/05/FCSC.png" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
